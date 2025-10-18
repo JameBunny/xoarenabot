@@ -200,3 +200,102 @@ html[data-theme="dark"] .social-icons img { filter: brightness(0) invert(1); }
     .hero-section p { font-size: 1.1rem; }
     .section-title { font-size: 2.2rem; }
 }
+
+/* =========================
+   iOS Glass Utilities (opt-in)
+   วางต่อจากสไตล์หลักด้านบน
+   ========================= */
+
+/* ค่ากระจกตามธีม */
+:root, html[data-theme="light"]{
+  --glass-bg: rgba(255,255,255,0.55);
+  --glass-border-1: rgba(255,255,255,0.85);
+  --glass-border-2: rgba(10,10,20,0.10);
+  --glass-shadow: 0 18px 40px rgba(13,26,49,0.18), 0 1px 0 rgba(255,255,255,0.35) inset;
+  --glass-radius: 22px;
+  --glass-blur: 20px;
+  --glass-sat: 140%;
+  --glass-top-highlight: linear-gradient(180deg, rgba(255,255,255,0.65), rgba(255,255,255,0) 42%);
+}
+html[data-theme="dark"]{
+  --glass-bg: rgba(255,255,255,0.08);
+  --glass-border-1: rgba(255,255,255,0.45);
+  --glass-border-2: rgba(255,255,255,0.06);
+  --glass-shadow: 0 20px 45px rgba(0,0,0,0.35), 0 1px 0 rgba(255,255,255,0.05) inset;
+  --glass-radius: 22px;
+  --glass-blur: 22px;
+  --glass-sat: 170%;
+  --glass-top-highlight: linear-gradient(180deg, rgba(255,255,255,0.25), rgba(255,255,255,0) 40%);
+}
+
+/* บล็อกกระจก */
+.glass{
+  position: relative;
+  background: var(--glass-bg);
+  border-radius: var(--glass-radius);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+
+  border: 1px solid transparent;
+  background-image:
+    linear-gradient(var(--glass-bg), var(--glass-bg)),
+    linear-gradient(145deg, var(--glass-border-1), var(--glass-border-2));
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
+/* ไฮไลต์ขอบบน */
+.glass::before{
+  content:"";
+  position:absolute; inset:0;
+  border-radius: inherit;
+  background: var(--glass-top-highlight);
+  pointer-events:none;
+  mix-blend-mode: screen;
+}
+/* noise เม็ดละเอียด */
+.glass::after{
+  content:"";
+  position:absolute; inset:0;
+  border-radius: inherit;
+  pointer-events:none;
+  opacity:.16;
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAPElEQVQYV2NkwA7+z0AEwDiQkJBRjAwM/2cYGBgYv2Gg0QwG4jCwYBgsBqJgQmGJ8rQm0g4iM4I9h8QJkAAO5a+1m0x8gNAAAAAElFTkSuQmCC');
+  background-size: 8px 8px;
+}
+
+/* ตัวช่วยการอ่านบนพื้นโปร่ง */
+.on-glass-strong { color: var(--text-primary); text-shadow: 0 1px 2px rgba(0,0,0,.25); }
+.on-glass-soft   { color: var(--text-secondary); }
+
+/* จุดสไลด์ให้อ่านง่าย */
+.slide-dots .dot{
+  background: color-mix(in oklab, var(--secondary-color) 70%, white 30%);
+  box-shadow: 0 1px 3px rgba(0,0,0,.35);
+}
+.slide-dots .dot.active{
+  background: color-mix(in oklab, var(--primary-color) 85%, white 15%);
+}
+
+/* ให้ header/footer ที่เป็นกระจกทึบขึ้นนิดเพื่ออ่านง่าย */
+.main-header .container.glass,
+.footer .container.glass{
+  background: color-mix(in oklab, var(--glass-bg) 86%, transparent);
+}
+
+/* รองรับผู้ใช้ที่ลด transparency */
+@media (prefers-reduced-transparency: reduce){
+  .glass{ background: rgba(24,28,40,.92); }
+  .glass::before, .glass::after{ display:none; }
+}
+
+/* Fallback เมื่อไม่รองรับ backdrop-filter */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))){
+  .glass{
+    background: color-mix(in srgb, var(--card-color) 90%, black 10%);
+  }
+  .glass::before, .glass::after{ display:none; }
+}
+
+/* มุมโค้งของสไลด์ให้เข้ากับกระจก */
+.slides { border-radius: calc(var(--glass-radius) - 6px); }
