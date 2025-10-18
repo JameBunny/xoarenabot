@@ -1,177 +1,280 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XO Arena Bot - A New Era of Tic-Tac-Toe</title>
-    <meta name="description" content="Experience Tic-Tac-Toe on Discord like never before. Clean design, powerful features, and seamless gameplay with XO Arena Bot.">
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="https://i.imgur.com/qqyb5eF.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XO Arena Bot - A New Era of Tic-Tac-Toe</title>
+  <meta name="description" content="Experience Tic-Tac-Toe on Discord like never before. Clean design, powerful features, and seamless gameplay with XO Arena Bot.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="https://i.imgur.com/qqyb5eF.png">
 
-    <!-- 🧊 Minimal Glassmorphism Styles (ปลอดภัย ไม่ทับสไตล์เดิม) -->
-    <style>
-      :root{
-        --glass-bg: rgba(255,255,255,0.06);
-        --glass-border: rgba(255,255,255,0.18);
-        --glass-shadow: 0 10px 30px rgba(0,0,0,0.25);
-        --radius-2xl: 1.25rem;
-      }
-      [data-theme="light"]{
-        --glass-bg: rgba(255,255,255,0.45);
-        --glass-border: rgba(255,255,255,0.75);
-        --glass-shadow: 0 10px 30px rgba(0,0,0,0.12);
-      }
-      body{
-        background:
-          radial-gradient(1200px 1200px at 20% -10%, rgba(120,119,198,0.25), transparent 50%),
-          radial-gradient(900px 900px at 90% 20%, rgba(0,212,255,0.20), transparent 50%),
-          radial-gradient(700px 700px at 30% 100%, rgba(255,0,153,0.15), transparent 55%),
-          linear-gradient(180deg, #0b0f1a, #0a0d15);
-        background-attachment: fixed;
-        min-height: 100dvh;
-      }
+  <!-- 🧊 iOS-style Glassmorphism (อ่านง่าย + ใสแบบ iOS 16/17) -->
+  <style>
+    /* ====== Tokens ====== */
+    :root{
+      /* พาเลตพื้นหลังแบบ iOS glow */
+      --bg-1: #0b0f1a;
+      --bg-2: #0a0d15;
+
+      /* ตัวหนังสือให้คมชัดบนพื้นโปร่ง */
+      --text-1: rgba(255,255,255,0.92);
+      --text-2: rgba(255,255,255,0.72);
+      --link-1: #d6e4ff;
+
+      /* กระจก */
+      --glass-bg: rgba(255,255,255,0.08);   /* โปร่งกว่าเดิมนิดให้ดู iOS */
+      --glass-border-1: rgba(255,255,255,0.45);
+      --glass-border-2: rgba(255,255,255,0.06);
+      --glass-shadow: 0 20px 45px rgba(0,0,0,0.35), 0 1px 0 rgba(255,255,255,0.05) inset;
+      --radius-2xl: 22px;
+      --blur: 22px;
+      --sat: 170%;
+      --top-highlight: linear-gradient(180deg, rgba(255,255,255,0.25), rgba(255,255,255,0) 40%);
+    }
+    [data-theme="light"]{
+      --bg-1: #f6f8ff;
+      --bg-2: #eef2ff;
+
+      --text-1: rgba(10,15,25,0.95);
+      --text-2: rgba(10,15,25,0.70);
+      --link-1: #1f4fff;
+
+      --glass-bg: rgba(255,255,255,0.55);
+      --glass-border-1: rgba(255,255,255,0.85);
+      --glass-border-2: rgba(10,10,20,0.10);
+      --glass-shadow: 0 18px 40px rgba(13,26,49,0.18), 0 1px 0 rgba(255,255,255,0.4) inset;
+      --blur: 20px;
+      --sat: 140%;
+      --top-highlight: linear-gradient(180deg, rgba(255,255,255,0.65), rgba(255,255,255,0) 42%);
+    }
+
+    /* ====== Background แบบ iOS vibrancy ====== */
+    body{
+      min-height:100dvh;
+      background:
+        radial-gradient(1200px 1200px at 20% -10%, rgba(120,119,198,0.25), transparent 50%),
+        radial-gradient(900px 900px at 90% 20%, rgba(0,212,255,0.20), transparent 50%),
+        radial-gradient(700px 700px at 30% 100%, rgba(255,0,153,0.15), transparent 55%),
+        linear-gradient(180deg, var(--bg-1), var(--bg-2));
+      background-attachment: fixed;
+      color: var(--text-1);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    /* ====== Core iOS Glass ====== */
+    .glass{
+      position: relative;
+      background: var(--glass-bg);
+      border-radius: var(--radius-2xl);
+      box-shadow: var(--glass-shadow);
+      color: var(--text-1);
+
+      /* iOS blur + vibrancy */
+      backdrop-filter: blur(var(--blur)) saturate(var(--sat));
+      -webkit-backdrop-filter: blur(var(--blur)) saturate(var(--sat));
+
+      /* ขอบกระจกแบบ half-gradient (มิติ) */
+      border: 1px solid transparent;
+      background-image:
+        linear-gradient(var(--glass-bg), var(--glass-bg)),
+        linear-gradient(145deg, var(--glass-border-1), var(--glass-border-2));
+      background-origin: border-box;
+      background-clip: padding-box, border-box;
+    }
+    /* ไฮไลต์ขอบบนแบบ iOS */
+    .glass::before{
+      content:"";
+      position:absolute; inset:0;
+      border-radius: inherit;
+      background: var(--top-highlight);
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+    /* noise เม็ดละเอียดให้เนื้อกระจก */
+    .glass::after{
+      content:"";
+      position:absolute; inset:0;
+      border-radius: inherit;
+      pointer-events:none;
+      opacity:.18;
+      background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAPElEQVQYV2NkwA7+z0AEwDiQkJBRjAwM/2cYGBgYv2Gg0QwG4jCwYBgsBqJgQmGJ8rQm0g4iM4I9h8QJkAAO5a+1m0x8gNAAAAAElFTkSuQmCC');
+      background-size: 8px 8px; /* เม็ดเล็กๆ แนว iOS */
+    }
+
+    /* Fallback ถ้าไม่รองรับ backdrop-filter */
+    @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))){
       .glass{
-        background: var(--glass-bg);
-        border: 1px solid var(--glass-border);
-        box-shadow: var(--glass-shadow);
-        backdrop-filter: blur(14px) saturate(130%);
-        -webkit-backdrop-filter: blur(14px) saturate(130%);
-        border-radius: var(--radius-2xl);
+        background: rgba(30,35,50,0.88);
       }
-      /* แต่ง spacing เบา ๆ ให้กลาสดูโปร */
-      .main-header .container.glass { margin-top: 1rem; padding: .75rem 1rem; }
-      .hero-section .hero-content.glass { padding: 2rem; }
-      .slideshow-container.glass { padding: .75rem; }
-      .feature-card.glass, .command-card.glass { padding: 1rem; transition: transform .2s ease, box-shadow .2s ease; }
-      .feature-card.glass:hover, .command-card.glass:hover { transform: translateY(-4px); box-shadow: 0 14px 40px rgba(0,0,0,0.35); }
-      .footer .container.glass { margin: 1.25rem auto; padding: 1rem 1.25rem; }
-    </style>
+      .glass::before, .glass::after{ display:none; }
+    }
+
+    /* พื้นที่ต่าง ๆ ปรับ spacing/คอนทราสต์ให้อ่านง่าย */
+    .main-header .container.glass { margin-top: 14px; padding: 10px 16px; }
+    .hero-section .hero-content.glass { padding: 28px; }
+    .slideshow-container.glass { padding: 10px; }
+    .feature-card.glass, .command-card.glass { padding: 16px; transition: transform .2s ease, box-shadow .2s ease; }
+    .feature-card.glass:hover, .command-card.glass:hover { transform: translateY(-4px); box-shadow: 0 28px 60px rgba(0,0,0,0.40); }
+    .footer .container.glass { margin: 18px auto; padding: 14px 18px; }
+
+    /* ตัวหนังสือบนพื้นโปร่งให้คมขึ้น */
+    .section-title, h1, h2, h3 { color: var(--text-1); text-shadow: 0 1px 2px rgba(0,0,0,.25); }
+    .content-section p, .command-card p, .feature-card p { color: var(--text-2); }
+
+    /* ลิงก์ให้อ่านง่าย */
+    a { color: var(--link-1); }
+    .btn.btn-primary, .btn.btn-secondary { color: #fff; } /* คงดีไซน์เดิม */
+
+    /* จุดสไลด์ให้เด่นขึ้นบนพื้นโปร่ง */
+    .slide-dots .dot{
+      background: rgba(255,255,255,.45);
+      box-shadow: 0 1px 3px rgba(0,0,0,.35);
+    }
+    .slide-dots .dot.active{
+      background: rgba(255,255,255,.95);
+    }
+
+    /* ปรับระยะ container ภาพสไลด์กว้างนิด */
+    .slides img.slide{ border-radius: calc(var(--radius-2xl) - 6px); }
+
+    /* ลดโปร่งใสของ header/footer ให้ทึบนิด อ่านง่าย */
+    .main-header .container.glass,
+    .footer .container.glass{
+      background: color-mix(in oklab, var(--glass-bg) 86%, transparent);
+    }
+
+    /* ผู้ใช้เปิดลด transparency (เข้าถึงได้) */
+    @media (prefers-reduced-transparency: reduce){
+      .glass{ background: rgba(24,28,40,.92); }
+      .glass::before, .glass::after{ display:none; }
+    }
+  </style>
 </head>
 <body>
 
-    <header class="main-header">
-        <nav class="container glass">
-            <a href="index.html" class="logo-link">
-                <img src="https://i.imgur.com/qqyb5eF.png" alt="XO Arena Logo" class="logo-image">
-                <span class="logo-text">XO Arena</span>
-            </a>
-            <div class="nav-links">
-                <a href="#features" data-lang="nav_features">Features</a>
-                <a href="shop.html" target="_blank" data-lang="nav_shop">Shop</a>
-                <a href="#commands" data-lang="nav_commands">Commands</a>
-                <a href="https://discord.gg/nX2AdShqhn" target="_blank" data-lang="nav_support">Support</a>
-            </div>
-            <div class="nav-right">
-                <select id="lang-switcher">
-                    <option value="en">🇺🇸 English</option>
-                    <option value="th">🇹🇭 ไทย</option>
-                    <option value="ja">🇯🇵 日本語</option>
-                </select>
-                <button id="theme-toggle" class="theme-button" aria-label="Toggle Theme">
-                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.106a.75.75 0 010 1.06l-1.591 1.59a.75.75 0 11-1.06-1.061l1.59-1.591a.75.75 0 011.062 0zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.836 17.894a.75.75 0 011.06 0l1.591 1.591a.75.75 0 11-1.06 1.06l-1.591-1.59a.75.75 0 010-1.062zM12 21.75a.75.75 0 01-.75-.75v-2.25a.75.75 0 011.5 0V21a.75.75 0 01-.75.75zM5.106 17.894a.75.75 0 010-1.06l1.591-1.591a.75.75 0 111.06 1.06l-1.59 1.591a.75.75 0 01-1.062 0zM3 12a.75.75 0 01.75-.75h2.25a.75.75 0 010 1.5H3.75A.75.75 0 013 12zM6.164 7.164a.75.75 0 01-1.06 0L3.512 5.573a.75.75 0 011.06-1.06l1.591 1.59a.75.75 0 010 1.062z"/></svg>
-                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 004.463-.976.75.75 0 01.818.162l.522.522a.75.75 0 01-.102 1.071A9.353 9.353 0 0118 18a9.372 9.372 0 01-9.372-9.372 9.353 9.353 0 011.07-4.462l.522-.522a.75.75 0 011.072-.102z" clip-rule="evenodd" /></svg>
-                </button>
-                <button id="hamburger-button" class="hamburger-menu" aria-label="Open Menu">
-                    <svg class="icon-open" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
-                    <svg class="icon-close" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
-                </button>
-            </div>
-        </nav>
-    </header>
-    
-    <main>
-        <section class="hero-section">
-            <div class="container hero-content glass">
-                <h1 class="reveal" data-lang="hero_title">The Ultimate Tic-Tac-Toe Experience.</h1>
-                <p class="reveal" data-lang="hero_subtitle">Challenge your friends or our smart AI. Simple, fun, and competitive.</p>
-                <div class="cta-buttons reveal">
-                    <a href="https://discord.com/oauth2/authorize?client_id=1350821486973288468&permissions=8&integration_type=0&scope=bot+applications.commands" class="btn btn-primary" data-lang="hero_cta_add">Add to Discord</a>
-                    <a href="https://top.gg/bot/1350821486973288468/vote" target="_blank" class="btn btn-secondary" data-lang="hero_cta_vote">Vote for Bot</a>
-                </div>
-                <div class="slideshow-container reveal glass">
-                    <div class="slides">
-                        <img src="https://i.imgur.com/BpPdFST.png" alt="Showcase Image 1" class="slide active">
-                        <img src="https://i.imgur.com/EWB4kdG.png" alt="Showcase Image 2" class="slide">
-                        <img src="https://i.imgur.com/He3X1u1.png" alt="Showcase Image 3" class="slide">
-                        <img src="https://i.imgur.com/B2Hvq8c.png" alt="Showcase Image 4" class="slide">
-                    </div>
-                    <div class="slide-dots">
-                        <span class="dot active" data-slide="0"></span>
-                        <span class="dot" data-slide="1"></span>
-                        <span class="dot" data-slide="2"></span>
-                        <span class="dot" data-slide="3"></span>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <section id="features" class="content-section">
-            <div class="container">
-                <h2 class="section-title reveal" data-lang="features_title">Powerful Features</h2>
-                <div class="features-grid">
-                    <div class="feature-card reveal glass"><h3 data-lang="feature_1_title">Play with Friends or Bot</h3><p data-lang="feature_1_desc">Challenge a friend for a classic match or test your skills against our smart AI.</p></div>
-                    <div class="feature-card reveal glass"><h3 data-lang="feature_2_title">Leaderboards & Stats</h3><p data-lang="feature_2_desc">Track your wins, losses, and draws. Climb the leaderboard to become the champion.</p></div>
-                    <div class="feature-card reveal glass"><h3 data-lang="feature_3_title">Multi-Language Support</h3><p data-lang="feature_3_desc">Play in Thai, English, or Japanese. The bot adapts to your preferred language.</p></div>
-                </div>
-            </div>
-        </section>
-
-        <section id="commands" class="content-section">
-            <div class="container">
-                <h2 class="section-title reveal" data-lang="commands_title">All Commands</h2>
-                <div class="commands-grid">
-                    <div class="command-card reveal glass"><h3>/play <span>@opponent</span></h3><p data-lang="cmd_play">Starts a game with another player.</p></div>
-                    <div class="command-card reveal glass"><h3>/playbot</h3><p data-lang="cmd_playbot">Starts a game against the AI bot.</p></div>
-                    <div class="command-card reveal glass"><h3>/stop</h3><p data-lang="cmd_stop">Stops the current game.</p></div>
-                    <div class="command-card reveal glass"><h3>/leaderboard</h3><p data-lang="cmd_leaderboard">Shows the server's top players.</p></div>
-                    <div class="command-card reveal glass"><h3>/stats <span>[user]</span></h3><p data-lang="cmd_stats">View your or another player's stats.</p></div>
-                    <div class="command-card reveal glass"><h3>/setlanguage <span>[th/en/jp]</span></h3><p data-lang="cmd_setlanguage">Changes the bot's language.</p></div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer class="footer">
-        <div class="container glass">
-            <p class="copyright">© 2025 NosuTeam. All rights reserved.</p>
-            <div class="footer-links">
-                <a href="terms.html" target="_blank" data-lang="footer_terms">Terms of Service</a>
-                <span>|</span>
-                <a href="privacy.html" target="_blank" data-lang="footer_privacy">Privacy Policy</a>
-            </div>
-            <div class="social-links">
-                <p data-lang="follow_us">Follow our developer</p>
-                <div class="social-icons">
-                    <a href="https://tiktok.com" target="_blank" aria-label="TikTok"><img src="https://i.imgur.com/1VqT47f.png" alt="TikTok"></a>
-                    <a href="https://facebook.com" target="_blank" aria-label="Facebook"><img src="https://i.imgur.com/P74nJvj.png" alt="Facebook"></a>
-                    <a href="https://youtube.com" target="_blank" aria-label="YouTube"><img src="https://i.imgur.com/H54c8Qc.png" alt="YouTube"></a>
-                    <a href="https://x.com" target="_blank" aria-label="X (Twitter)"><img src="https://i.imgur.com/wK4x8rS.png" alt="X"></a>
-                    <a href="https://bsky.app" target="_blank" aria-label="Bluesky"><img src="https://i.imgur.com/bsdZjFm.png" alt="Bluesky"></a>
-                </div>
-            </div>
-            <p class="made-by">Made with ❤️ by takahashi021</p>
+  <header class="main-header">
+    <nav class="container glass">
+      <a href="index.html" class="logo-link">
+        <img src="https://i.imgur.com/qqyb5eF.png" alt="XO Arena Logo" class="logo-image">
+        <span class="logo-text">XO Arena</span>
+      </a>
+      <div class="nav-links">
+        <a href="#features" data-lang="nav_features">Features</a>
+        <a href="shop.html" target="_blank" data-lang="nav_shop">Shop</a>
+        <a href="#commands" data-lang="nav_commands">Commands</a>
+        <a href="https://discord.gg/nX2AdShqhn" target="_blank" data-lang="nav_support">Support</a>
+      </div>
+      <div class="nav-right">
+        <select id="lang-switcher">
+          <option value="en">🇺🇸 English</option>
+          <option value="th">🇹🇭 ไทย</option>
+          <option value="ja">🇯🇵 日本語</option>
+        </select>
+        <button id="theme-toggle" class="theme-button" aria-label="Toggle Theme">
+          <svg class="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.106a.75.75 0 010 1.06l-1.591 1.59a.75.75 0 11-1.06-1.061l1.59-1.591a.75.75 0 011.062 0zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.836 17.894a.75.75 0 011.06 0l1.591 1.591a.75.75 0 11-1.06 1.06l-1.591-1.59a.75.75 0 010-1.062zM12 21.75a.75.75 0 01-.75-.75v-2.25a.75.75 0 011.5 0V21a.75.75 0 01-.75.75zM5.106 17.894a.75.75 0 010-1.06l1.591-1.591a.75.75 0 111.06 1.06l-1.59 1.591a.75.75 0 01-1.062 0zM3 12a.75.75 0 01.75-.75h2.25a.75.75 0 010 1.5H3.75A.75.75 0 013 12zM6.164 7.164a.75.75 0 01-1.06 0L3.512 5.573a.75.75 0 011.06-1.06l1.591 1.59a.75.75 0 010 1.062z"/></svg>
+          <svg class="moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 004.463-.976.75.75 0 01.818.162l.522.522a.75.75 0 01-.102 1.071A9.353 9.353 0 0118 18a9.372 9.372 0 01-9.372-9.372 9.353 9.353 0 011.07-4.462l.522-.522a.75.75 0 011.072-.102z" clip-rule="evenodd" /></svg>
+        </button>
+        <button id="hamburger-button" class="hamburger-menu" aria-label="Open Menu">
+          <svg class="icon-open" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
+          <svg class="icon-close" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+        </button>
+      </div>
+    </nav>
+  </header>
+  
+  <main>
+    <section class="hero-section">
+      <div class="container hero-content glass">
+        <h1 class="reveal" data-lang="hero_title">The Ultimate Tic-Tac-Toe Experience.</h1>
+        <p class="reveal" data-lang="hero_subtitle">Challenge your friends or our smart AI. Simple, fun, and competitive.</p>
+        <div class="cta-buttons reveal">
+          <a href="https://discord.com/oauth2/authorize?client_id=1350821486973288468&permissions=8&integration_type=0&scope=bot+applications.commands" class="btn btn-primary" data-lang="hero_cta_add">Add to Discord</a>
+          <a href="https://top.gg/bot/1350821486973288468/vote" target="_blank" class="btn btn-secondary" data-lang="hero_cta_vote">Vote for Bot</a>
         </div>
-    </footer>
+        <div class="slideshow-container reveal glass">
+          <div class="slides">
+            <img src="https://i.imgur.com/BpPdFST.png" alt="Showcase Image 1" class="slide active">
+            <img src="https://i.imgur.com/EWB4kdG.png" alt="Showcase Image 2" class="slide">
+            <img src="https://i.imgur.com/He3X1u1.png" alt="Showcase Image 3" class="slide">
+            <img src="https://i.imgur.com/B2Hvq8c.png" alt="Showcase Image 4" class="slide">
+          </div>
+          <div class="slide-dots">
+            <span class="dot active" data-slide="0"></span>
+            <span class="dot" data-slide="1"></span>
+            <span class="dot" data-slide="2"></span>
+            <span class="dot" data-slide="3"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <section id="features" class="content-section">
+      <div class="container">
+        <h2 class="section-title reveal" data-lang="features_title">Powerful Features</h2>
+        <div class="features-grid">
+          <div class="feature-card reveal glass"><h3 data-lang="feature_1_title">Play with Friends or Bot</h3><p data-lang="feature_1_desc">Challenge a friend for a classic match or test your skills against our smart AI.</p></div>
+          <div class="feature-card reveal glass"><h3 data-lang="feature_2_title">Leaderboards & Stats</h3><p data-lang="feature_2_desc">Track your wins, losses, and draws. Climb the leaderboard to become the champion.</p></div>
+          <div class="feature-card reveal glass"><h3 data-lang="feature_3_title">Multi-Language Support</h3><p data-lang="feature_3_desc">Play in Thai, English, or Japanese. The bot adapts to your preferred language.</p></div>
+        </div>
+      </div>
+    </section>
 
-    <script src="script.js"></script>
+    <section id="commands" class="content-section">
+      <div class="container">
+        <h2 class="section-title reveal" data-lang="commands_title">All Commands</h2>
+        <div class="commands-grid">
+          <div class="command-card reveal glass"><h3>/play <span>@opponent</span></h3><p data-lang="cmd_play">Starts a game with another player.</p></div>
+          <div class="command-card reveal glass"><h3>/playbot</h3><p data-lang="cmd_playbot">Starts a game against the AI bot.</p></div>
+          <div class="command-card reveal glass"><h3>/stop</h3><p data-lang="cmd_stop">Stops the current game.</p></div>
+          <div class="command-card reveal glass"><h3>/leaderboard</h3><p data-lang="cmd_leaderboard">Shows the server's top players.</p></div>
+          <div class="command-card reveal glass"><h3>/stats <span>[user]</span></h3><p data-lang="cmd_stats">View your or another player's stats.</p></div>
+          <div class="command-card reveal glass"><h3>/setlanguage <span>[th/en/jp]</span></h3><p data-lang="cmd_setlanguage">Changes the bot's language.</p></div>
+        </div>
+      </div>
+    </section>
+  </main>
 
-    <!-- 🔁 Include helper: ใช้ซ้ำ footer/header ในทุกหน้า
-         วิธีใช้ในหน้าอื่น: วาง <div data-include="partials/footer.html"></div> ก่อน </body> -->
-    <script>
-      (async function includePartials(){
-        const slots = document.querySelectorAll('[data-include]');
-        await Promise.all([...slots].map(async (el)=>{
-          const path = el.getAttribute('data-include');
-          try{
-            const res = await fetch(path, {cache:'no-store'});
-            if(!res.ok) throw new Error(`HTTP ${res.status}`);
-            const html = await res.text();
-            el.outerHTML = html;
-          }catch(err){
-            console.error('Include failed for', path, err);
-          }
-        }));
-      })();
-    </script>
+  <footer class="footer">
+    <div class="container glass">
+      <p class="copyright">© 2025 NosuTeam. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="terms.html" target="_blank" data-lang="footer_terms">Terms of Service</a>
+        <span>|</span>
+        <a href="privacy.html" target="_blank" data-lang="footer_privacy">Privacy Policy</a>
+      </div>
+      <div class="social-links">
+        <p data-lang="follow_us">Follow our developer</p>
+        <div class="social-icons">
+          <a href="https://tiktok.com" target="_blank" aria-label="TikTok"><img src="https://i.imgur.com/1VqT47f.png" alt="TikTok"></a>
+          <a href="https://facebook.com" target="_blank" aria-label="Facebook"><img src="https://i.imgur.com/P74nJvj.png" alt="Facebook"></a>
+          <a href="https://youtube.com" target="_blank" aria-label="YouTube"><img src="https://i.imgur.com/H54c8Qc.png" alt="YouTube"></a>
+          <a href="https://x.com" target="_blank" aria-label="X (Twitter)"><img src="https://i.imgur.com/wK4x8rS.png" alt="X"></a>
+          <a href="https://bsky.app" target="_blank" aria-label="Bluesky"><img src="https://i.imgur.com/bsdZjFm.png" alt="Bluesky"></a>
+        </div>
+      </div>
+      <p class="made-by">Made with ❤️ by takahashi021</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+
+  <!-- Include helper (ไม่จำเป็นในหน้า index เพราะมี footer อยู่แล้ว แต่เผื่อหน้าอื่น) -->
+  <script>
+    (async function includePartials(){
+      const slots = document.querySelectorAll('[data-include]');
+      await Promise.all([...slots].map(async (el)=>{
+        const path = el.getAttribute('data-include');
+        try{
+          const res = await fetch(path, {cache:'no-store'});
+          if(!res.ok) throw new Error(`HTTP ${res.status}`);
+          const html = await res.text();
+          el.outerHTML = html;
+        }catch(err){
+          console.error('Include failed for', path, err);
+        }
+      }));
+    })();
+  </script>
 </body>
 </html>
