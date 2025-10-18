@@ -164,13 +164,84 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     setLanguage(localStorage.getItem('xo-arena-lang') || 'en');
 
-    // 6) Scroll Reveal Animation
+    // 6) Scroll Reveal Animation (เดิม)
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) { entry.target.classList.add('visible'); }
+        if (entry.isIntersecting) { 
+          entry.target.classList.add('visible'); 
+          // ทำให้ reveal เฉพาะครั้ง (ช่วยประสิทธิภาพและลื่นขึ้น)
+          observer.unobserve(entry.target);
+        }
       });
-    }, { threshold: 0.1 });
+    }, { threshold: 0.12 });
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
   })();
 });
+
+
+// ===================================================
+// Modern Scroll Interactions (เพิ่มฟีเจอร์เลื่อนให้ทันสมัย)
+// ===================================================
+
+// 1) สร้าง Progress Bar ด้านบนอัตโนมัติ (ถ้ายังไม่มี)
+(function createProgressBar(){
+  if (document.getElementById('scroll-progress')) return;
+  const bar = document.createElement('div');
+  bar.id = 'scroll-progress';
+  document.body.appendChild(bar);
+})();
+
+// 2) อัปเดตความคืบหน้าตามการเลื่อน (ใช้งาน rAF เพื่อความลื่น)
+(function scrollProgress(){
+  const bar = document.getElementById('scroll-progress');
+  if (!bar) return;
+  const update = () => {
+    const h = document.documentElement;
+    const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight);
+    bar.style.width = (Math.max(0, Math.min(1, scrolled)) * 100).toFixed(2) + '%';
+  };
+  update();
+  window.addEventListener('scroll', () => requestAnimationFrame(update), { passive: true });
+  window.addEventListener('resize', () => requestAnimationFrame(update));
+})();
+
+// 3) Parallax เบา ๆ ให้ hero/media ดู “ลอย” (เคารพ reduced-motion)
+(function parallaxLite(){
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) return;
+
+  // ใส่ .parallax ให้ element หลัก ๆ ถ้ายังไม่มี
+  const candidates = [
+    '.hero-section .hero-content',
+    '.hero-section .slideshow-container',
+    '.features-grid'
+  ];
+  candidates.forEach(sel=>{
+    document.querySelectorAll(sel).forEach(el=>{
+      if (!el.classList.contains('parallax')) el.classList.add('parallax');
+      if (!el.dataset.parallaxSpeed) el.dataset.parallaxSpeed = '0.15'; // default speed
+    });
+  });
+
+  const els = Array.from(document.querySelectorAll('.parallax'));
+  if (!els.length) return;
+
+  let ticking = false;
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(()=>{
+      const y = window.scrollY || window.pageYOffset;
+      els.forEach(el=>{
+        const speed = parseFloat(el.dataset.parallaxSpeed || '0.15');
+        const offset = (y * speed);
+        el.style.transform = `translate3d(0, ${offset}px, 0)`;
+      });
+      ticking = false;
+    });
+  };
+
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+})();
