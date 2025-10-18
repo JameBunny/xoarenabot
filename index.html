@@ -5,10 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>XO Arena Bot - A New Era of Tic-Tac-Toe</title>
   <meta name="description" content="Experience Tic-Tac-Toe on Discord like never before. Clean design, powerful features, and seamless gameplay with XO Arena Bot.">
+
+  <!-- สีแถบเบราว์เซอร์ (อัปเดตอัตโนมัติจาก script.js) -->
+  <meta name="theme-color" content="#0b0f1a">
+
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="https://i.imgur.com/qqyb5eF.png">
 
-  <!-- 🧊 iOS-style Glassmorphism (อ่านง่าย + ใสแบบ iOS) -->
+  <!-- 🧊 iOS-style Glassmorphism (เฉพาะ index เพื่อความอ่านง่ายยิ่งขึ้น) -->
   <style>
     /* ====== Tokens: ปรับคอนทราสต์ตัวหนังสือให้คมขึ้น ====== */
     :root{
@@ -127,24 +131,28 @@
 
     /* มุมภาพในสไลด์ให้โค้งตามกระจก */
     .slides { border-radius: calc(var(--radius-2xl) - 6px); }
+
+    /* ทำ hero โปร่งเพื่อเห็น background glow */
+    .hero-section { background: transparent !important; padding-top: 110px; }
   </style>
 </head>
 <body>
 
   <header class="main-header">
-    <nav class="container glass">
-      <a href="index.html" class="logo-link">
-        <img src="https://i.imgur.com/qqyb5eF.png" alt="XO Arena Logo" class="logo-image">
+    <nav class="container glass" role="navigation" aria-label="Main">
+      <a href="index.html" class="logo-link" aria-label="XO Arena Home">
+        <img src="https://i.imgur.com/qqyb5eF.png" alt="XO Arena Logo" class="logo-image" width="32" height="32">
         <span class="logo-text">XO Arena</span>
       </a>
       <div class="nav-links">
         <a href="#features" data-lang="nav_features">Features</a>
-        <a href="shop.html" target="_blank" data-lang="nav_shop">Shop</a>
+        <a href="shop.html" target="_blank" rel="noopener" data-lang="nav_shop">Shop</a>
         <a href="#commands" data-lang="nav_commands">Commands</a>
-        <a href="https://discord.gg/nX2AdShqhn" target="_blank" data-lang="nav_support">Support</a>
+        <a href="https://discord.gg/nX2AdShqhn" target="_blank" rel="noopener" data-lang="nav_support">Support</a>
       </div>
       <div class="nav-right">
-        <select id="lang-switcher">
+        <label class="sr-only" for="lang-switcher">Language</label>
+        <select id="lang-switcher" aria-label="Language">
           <option value="en">🇺🇸 English</option>
           <option value="th">🇹🇭 ไทย</option>
           <option value="ja">🇯🇵 日本語</option>
@@ -169,20 +177,20 @@
         <p class="reveal on-glass-soft" data-lang="hero_subtitle">Challenge your friends or our smart AI. Simple, fun, and competitive.</p>
         <div class="cta-buttons reveal">
           <a href="https://discord.com/oauth2/authorize?client_id=1350821486973288468&permissions=8&integration_type=0&scope=bot+applications.commands" class="btn btn-primary" data-lang="hero_cta_add">Add to Discord</a>
-          <a href="https://top.gg/bot/1350821486973288468/vote" target="_blank" class="btn btn-secondary" data-lang="hero_cta_vote">Vote for Bot</a>
+          <a href="https://top.gg/bot/1350821486973288468/vote" target="_blank" rel="noopener" class="btn btn-secondary" data-lang="hero_cta_vote">Vote for Bot</a>
         </div>
-        <div class="slideshow-container reveal glass">
+        <div class="slideshow-container reveal glass" aria-label="Showcase screenshots">
           <div class="slides">
-            <img src="https://i.imgur.com/BpPdFST.png" alt="Showcase Image 1" class="slide active">
-            <img src="https://i.imgur.com/EWB4kdG.png" alt="Showcase Image 2" class="slide">
-            <img src="https://i.imgur.com/He3X1u1.png" alt="Showcase Image 3" class="slide">
-            <img src="https://i.imgur.com/B2Hvq8c.png" alt="Showcase Image 4" class="slide">
+            <img src="https://i.imgur.com/BpPdFST.png" alt="Showcase Image 1" class="slide active" loading="eager" width="1024" height="576">
+            <img src="https://i.imgur.com/EWB4kdG.png" alt="Showcase Image 2" class="slide" loading="lazy" width="1024" height="576">
+            <img src="https://i.imgur.com/He3X1u1.png" alt="Showcase Image 3" class="slide" loading="lazy" width="1024" height="576">
+            <img src="https://i.imgur.com/B2Hvq8c.png" alt="Showcase Image 4" class="slide" loading="lazy" width="1024" height="576">
           </div>
-          <div class="slide-dots">
-            <span class="dot active" data-slide="0"></span>
-            <span class="dot" data-slide="1"></span>
-            <span class="dot" data-slide="2"></span>
-            <span class="dot" data-slide="3"></span>
+          <div class="slide-dots" role="tablist" aria-label="Slide controls">
+            <button class="dot active" data-slide="0" role="tab" aria-selected="true" aria-label="Show slide 1"></button>
+            <button class="dot" data-slide="1" role="tab" aria-label="Show slide 2"></button>
+            <button class="dot" data-slide="2" role="tab" aria-label="Show slide 3"></button>
+            <button class="dot" data-slide="3" role="tab" aria-label="Show slide 4"></button>
           </div>
         </div>
       </div>
@@ -192,9 +200,18 @@
       <div class="container">
         <h2 class="section-title reveal on-glass-strong" data-lang="features_title">Powerful Features</h2>
         <div class="features-grid">
-          <div class="feature-card reveal glass"><h3 class="on-glass-strong" data-lang="feature_1_title">Play with Friends or Bot</h3><p class="on-glass-soft" data-lang="feature_1_desc">Challenge a friend for a classic match or test your skills against our smart AI.</p></div>
-          <div class="feature-card reveal glass"><h3 class="on-glass-strong" data-lang="feature_2_title">Leaderboards & Stats</h3><p class="on-glass-soft" data-lang="feature_2_desc">Track your wins, losses, and draws. Climb the leaderboard to become the champion.</p></div>
-          <div class="feature-card reveal glass"><h3 class="on-glass-strong" data-lang="feature_3_title">Multi-Language Support</h3><p class="on-glass-soft" data-lang="feature_3_desc">Play in Thai, English, or Japanese. The bot adapts to your preferred language.</p></div>
+          <article class="feature-card reveal glass">
+            <h3 class="on-glass-strong" data-lang="feature_1_title">Play with Friends or Bot</h3>
+            <p class="on-glass-soft" data-lang="feature_1_desc">Challenge a friend for a classic match or test your skills against our smart AI.</p>
+          </article>
+          <article class="feature-card reveal glass">
+            <h3 class="on-glass-strong" data-lang="feature_2_title">Leaderboards & Stats</h3>
+            <p class="on-glass-soft" data-lang="feature_2_desc">Track your wins, losses, and draws. Climb the leaderboard to become the champion.</p>
+          </article>
+          <article class="feature-card reveal glass">
+            <h3 class="on-glass-strong" data-lang="feature_3_title">Multi-Language Support</h3>
+            <p class="on-glass-soft" data-lang="feature_3_desc">Play in Thai, English, or Japanese. The bot adapts to your preferred language.</p>
+          </article>
         </div>
       </div>
     </section>
@@ -214,34 +231,36 @@
     </section>
   </main>
 
-  <footer class="footer">
+  <footer class="footer" role="contentinfo">
     <div class="container glass">
       <p class="copyright">© 2025 NosuTeam. All rights reserved.</p>
       <div class="footer-links">
-        <a href="terms.html" target="_blank" data-lang="footer_terms">Terms of Service</a>
+        <a href="terms.html" target="_blank" rel="noopener" data-lang="footer_terms">Terms of Service</a>
         <span>|</span>
-        <a href="privacy.html" target="_blank" data-lang="footer_privacy">Privacy Policy</a>
+        <a href="privacy.html" target="_blank" rel="noopener" data-lang="footer_privacy">Privacy Policy</a>
       </div>
       <div class="social-links">
         <p data-lang="follow_us">Follow our developer</p>
         <div class="social-icons">
-          <a href="https://tiktok.com" target="_blank" aria-label="TikTok"><img src="https://i.imgur.com/1VqT47f.png" alt="TikTok"></a>
-          <a href="https://facebook.com" target="_blank" aria-label="Facebook"><img src="https://i.imgur.com/P74nJvj.png" alt="Facebook"></a>
-          <a href="https://youtube.com" target="_blank" aria-label="YouTube"><img src="https://i.imgur.com/H54c8Qc.png" alt="YouTube"></a>
-          <a href="https://x.com" target="_blank" aria-label="X (Twitter)"><img src="https://i.imgur.com/wK4x8rS.png" alt="X"></a>
-          <a href="https://bsky.app" target="_blank" aria-label="Bluesky"><img src="https://i.imgur.com/bsdZjFm.png" alt="Bluesky"></a>
+          <a href="https://tiktok.com" target="_blank" rel="noopener" aria-label="TikTok"><img src="https://i.imgur.com/1VqT47f.png" alt="TikTok" width="28" height="28"></a>
+          <a href="https://facebook.com" target="_blank" rel="noopener" aria-label="Facebook"><img src="https://i.imgur.com/P74nJvj.png" alt="Facebook" width="28" height="28"></a>
+          <a href="https://youtube.com" target="_blank" rel="noopener" aria-label="YouTube"><img src="https://i.imgur.com/H54c8Qc.png" alt="YouTube" width="28" height="28"></a>
+          <a href="https://x.com" target="_blank" rel="noopener" aria-label="X (Twitter)"><img src="https://i.imgur.com/wK4x8rS.png" alt="X" width="28" height="28"></a>
+          <a href="https://bsky.app" target="_blank" rel="noopener" aria-label="Bluesky"><img src="https://i.imgur.com/bsdZjFm.png" alt="Bluesky" width="28" height="28"></a>
         </div>
       </div>
       <p class="made-by">Made with ❤️ by takahashi021</p>
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <!-- สคริปต์หลัก (มี WidgetBot, includePartials, แถบเลื่อน, Parallax, Translation ฯลฯ) -->
+  <script src="script.js" defer></script>
 
-  <!-- Include helper เผื่อใช้กับหน้าอื่น -->
+  <!-- Include helper เผื่อใช้กับหน้าอื่นที่ไม่มี footer ในตัว -->
   <script>
     (async function includePartials(){
       const slots = document.querySelectorAll('[data-include]');
+      if (!slots.length) return;
       await Promise.all([...slots].map(async (el)=>{
         const path = el.getAttribute('data-include');
         try{
@@ -255,5 +274,9 @@
       }));
     })();
   </script>
+
+  <noscript>
+    <style>.reveal{opacity:1;transform:none}</style>
+  </noscript>
 </body>
 </html>
