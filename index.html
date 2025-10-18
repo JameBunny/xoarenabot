@@ -1,54 +1,53 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>XO Arena Bot - A New Era of Tic-Tac-Toe</title>
   <meta name="description" content="Experience Tic-Tac-Toe on Discord like never before. Clean design, powerful features, and seamless gameplay with XO Arena Bot.">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="https://i.imgur.com/qqyb5eF.png">
 
-  <!-- 🧊 iOS-style Glassmorphism (อ่านง่าย + ใสแบบ iOS 16/17) -->
+  <!-- 🧊 iOS-style Glassmorphism (อ่านง่าย + ใสแบบ iOS) -->
   <style>
-    /* ====== Tokens ====== */
+    /* ====== Tokens: ปรับคอนทราสต์ตัวหนังสือให้คมขึ้น ====== */
     :root{
-      /* พาเลตพื้นหลังแบบ iOS glow */
       --bg-1: #0b0f1a;
       --bg-2: #0a0d15;
 
-      /* ตัวหนังสือให้คมชัดบนพื้นโปร่ง */
-      --text-1: rgba(255,255,255,0.92);
-      --text-2: rgba(255,255,255,0.72);
+      /* ตัวหนังสือบนพื้นโปร่ง / พื้นหลังเข้ม */
+      --text-1: rgba(255,255,255,0.96);
+      --text-2: rgba(255,255,255,0.80);
       --link-1: #d6e4ff;
 
-      /* กระจก */
-      --glass-bg: rgba(255,255,255,0.08);   /* โปร่งกว่าเดิมนิดให้ดู iOS */
-      --glass-border-1: rgba(255,255,255,0.45);
+      /* กระจก iOS */
+      --glass-bg: rgba(255,255,255,0.12); /* โปร่ง + อ่านง่ายขึ้น */
+      --glass-border-1: rgba(255,255,255,0.50);
       --glass-border-2: rgba(255,255,255,0.06);
-      --glass-shadow: 0 20px 45px rgba(0,0,0,0.35), 0 1px 0 rgba(255,255,255,0.05) inset;
+      --glass-shadow: 0 22px 55px rgba(0,0,0,0.40), 0 1px 0 rgba(255,255,255,0.06) inset;
       --radius-2xl: 22px;
       --blur: 22px;
       --sat: 170%;
-      --top-highlight: linear-gradient(180deg, rgba(255,255,255,0.25), rgba(255,255,255,0) 40%);
+      --top-highlight: linear-gradient(180deg, rgba(255,255,255,0.28), rgba(255,255,255,0) 42%);
     }
     [data-theme="light"]{
-      --bg-1: #f6f8ff;
+      --bg-1: #f7f9ff;
       --bg-2: #eef2ff;
 
-      --text-1: rgba(10,15,25,0.95);
-      --text-2: rgba(10,15,25,0.70);
+      --text-1: rgba(10,15,25,0.96);
+      --text-2: rgba(10,15,25,0.74);
       --link-1: #1f4fff;
 
-      --glass-bg: rgba(255,255,255,0.55);
-      --glass-border-1: rgba(255,255,255,0.85);
+      --glass-bg: rgba(255,255,255,0.58);
+      --glass-border-1: rgba(255,255,255,0.88);
       --glass-border-2: rgba(10,10,20,0.10);
-      --glass-shadow: 0 18px 40px rgba(13,26,49,0.18), 0 1px 0 rgba(255,255,255,0.4) inset;
+      --glass-shadow: 0 18px 40px rgba(13,26,49,0.18), 0 1px 0 rgba(255,255,255,0.40) inset;
       --blur: 20px;
       --sat: 140%;
       --top-highlight: linear-gradient(180deg, rgba(255,255,255,0.65), rgba(255,255,255,0) 42%);
     }
 
-    /* ====== Background แบบ iOS vibrancy ====== */
+    /* ====== พื้นหลัง glow + gradient แบบ iOS ====== */
     body{
       min-height:100dvh;
       background:
@@ -62,19 +61,15 @@
       text-rendering: optimizeLegibility;
     }
 
-    /* ====== Core iOS Glass ====== */
+    /* ====== Glass base ====== */
     .glass{
       position: relative;
       background: var(--glass-bg);
       border-radius: var(--radius-2xl);
       box-shadow: var(--glass-shadow);
       color: var(--text-1);
-
-      /* iOS blur + vibrancy */
       backdrop-filter: blur(var(--blur)) saturate(var(--sat));
       -webkit-backdrop-filter: blur(var(--blur)) saturate(var(--sat));
-
-      /* ขอบกระจกแบบ half-gradient (มิติ) */
       border: 1px solid transparent;
       background-image:
         linear-gradient(var(--glass-bg), var(--glass-bg)),
@@ -82,7 +77,13 @@
       background-origin: border-box;
       background-clip: padding-box, border-box;
     }
-    /* ไฮไลต์ขอบบนแบบ iOS */
+    /* กระจกทึบขึ้นอีกนิด สำหรับส่วนที่ต้อง “อ่านง่ายสุด” */
+    .glass-strong{
+      background: color-mix(in oklab, var(--glass-bg) 95%, rgba(0,0,0,0.18));
+      border: 1px solid color-mix(in oklab, var(--glass-border-1) 70%, #000 30%);
+    }
+
+    /* ขอบบน glossy */
     .glass::before{
       content:"";
       position:absolute; inset:0;
@@ -91,64 +92,41 @@
       pointer-events: none;
       mix-blend-mode: screen;
     }
-    /* noise เม็ดละเอียดให้เนื้อกระจก */
+    /* grain เบา ๆ */
     .glass::after{
       content:"";
       position:absolute; inset:0;
       border-radius: inherit;
       pointer-events:none;
-      opacity:.18;
+      opacity:.16;
       background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAPElEQVQYV2NkwA7+z0AEwDiQkJBRjAwM/2cYGBgYv2Gg0QwG4jCwYBgsBqJgQmGJ8rQm0g4iM4I9h8QJkAAO5a+1m0x8gNAAAAAElFTkSuQmCC');
-      background-size: 8px 8px; /* เม็ดเล็กๆ แนว iOS */
+      background-size: 8px 8px;
     }
 
-    /* Fallback ถ้าไม่รองรับ backdrop-filter */
+    /* Fallback */
     @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))){
-      .glass{
-        background: rgba(30,35,50,0.88);
-      }
+      .glass{ background: rgba(30,35,50,0.90); }
       .glass::before, .glass::after{ display:none; }
     }
 
-    /* พื้นที่ต่าง ๆ ปรับ spacing/คอนทราสต์ให้อ่านง่าย */
+    /* Spacing ที่พอดีมือ */
     .main-header .container.glass { margin-top: 14px; padding: 10px 16px; }
     .hero-section .hero-content.glass { padding: 28px; }
     .slideshow-container.glass { padding: 10px; }
-    .feature-card.glass, .command-card.glass { padding: 16px; transition: transform .2s ease, box-shadow .2s ease; }
-    .feature-card.glass:hover, .command-card.glass:hover { transform: translateY(-4px); box-shadow: 0 28px 60px rgba(0,0,0,0.40); }
-    .footer .container.glass { margin: 18px auto; padding: 14px 18px; }
+    .feature-card.glass, .command-card.glass { padding: 18px; transition: transform .2s ease, box-shadow .2s ease; }
+    .feature-card.glass:hover, .command-card.glass:hover { transform: translateY(-4px); box-shadow: 0 28px 60px rgba(0,0,0,0.42); }
+    .footer .container.glass { margin: 18px auto; padding: 14px 18px; background: color-mix(in oklab, var(--glass-bg) 86%, transparent); }
 
-    /* ตัวหนังสือบนพื้นโปร่งให้คมขึ้น */
-    .section-title, h1, h2, h3 { color: var(--text-1); text-shadow: 0 1px 2px rgba(0,0,0,.25); }
-    .content-section p, .command-card p, .feature-card p { color: var(--text-2); }
+    /* ตัวหนังสือบนกระจกให้มีเงาอ่านง่าย */
+    .on-glass-strong { color: var(--text-1); text-shadow: 0 1px 2px rgba(0,0,0,.35); }
+    .on-glass-soft   { color: var(--text-2); text-shadow: 0 1px 2px rgba(0,0,0,.20); }
 
-    /* ลิงก์ให้อ่านง่าย */
-    a { color: var(--link-1); }
-    .btn.btn-primary, .btn.btn-secondary { color: #fff; } /* คงดีไซน์เดิม */
+    /* จุดสไลด์/ปุ่มให้เด่นขึ้น */
+    .slide-dots .dot{ background: rgba(255,255,255,.55); box-shadow: 0 1px 3px rgba(0,0,0,.35); }
+    .slide-dots .dot.active{ background: rgba(255,255,255,.96); transform: scale(1.15); }
 
-    /* จุดสไลด์ให้เด่นขึ้นบนพื้นโปร่ง */
-    .slide-dots .dot{
-      background: rgba(255,255,255,.45);
-      box-shadow: 0 1px 3px rgba(0,0,0,.35);
-    }
-    .slide-dots .dot.active{
-      background: rgba(255,255,255,.95);
-    }
-
-    /* ปรับระยะ container ภาพสไลด์กว้างนิด */
-    .slides img.slide{ border-radius: calc(var(--radius-2xl) - 6px); }
-
-    /* ลดโปร่งใสของ header/footer ให้ทึบนิด อ่านง่าย */
-    .main-header .container.glass,
-    .footer .container.glass{
-      background: color-mix(in oklab, var(--glass-bg) 86%, transparent);
-    }
-
-    /* ผู้ใช้เปิดลด transparency (เข้าถึงได้) */
-    @media (prefers-reduced-transparency: reduce){
-      .glass{ background: rgba(24,28,40,.92); }
-      .glass::before, .glass::after{ display:none; }
-    }
+    /* มุมภาพในสไลด์ให้โค้งตามกระจก */
+    .slides { border-radius: calc(var(--radius-2xl) - 6px); }
   </style>
 </head>
 <body>
@@ -185,9 +163,10 @@
   
   <main>
     <section class="hero-section">
-      <div class="container hero-content glass">
-        <h1 class="reveal" data-lang="hero_title">The Ultimate Tic-Tac-Toe Experience.</h1>
-        <p class="reveal" data-lang="hero_subtitle">Challenge your friends or our smart AI. Simple, fun, and competitive.</p>
+      <!-- ใช้ glass-strong เพื่อความอ่านง่ายที่สุด -->
+      <div class="container hero-content glass glass-strong">
+        <h1 class="reveal on-glass-strong" data-lang="hero_title">The Ultimate Tic-Tac-Toe Experience.</h1>
+        <p class="reveal on-glass-soft" data-lang="hero_subtitle">Challenge your friends or our smart AI. Simple, fun, and competitive.</p>
         <div class="cta-buttons reveal">
           <a href="https://discord.com/oauth2/authorize?client_id=1350821486973288468&permissions=8&integration_type=0&scope=bot+applications.commands" class="btn btn-primary" data-lang="hero_cta_add">Add to Discord</a>
           <a href="https://top.gg/bot/1350821486973288468/vote" target="_blank" class="btn btn-secondary" data-lang="hero_cta_vote">Vote for Bot</a>
@@ -211,25 +190,25 @@
     
     <section id="features" class="content-section">
       <div class="container">
-        <h2 class="section-title reveal" data-lang="features_title">Powerful Features</h2>
+        <h2 class="section-title reveal on-glass-strong" data-lang="features_title">Powerful Features</h2>
         <div class="features-grid">
-          <div class="feature-card reveal glass"><h3 data-lang="feature_1_title">Play with Friends or Bot</h3><p data-lang="feature_1_desc">Challenge a friend for a classic match or test your skills against our smart AI.</p></div>
-          <div class="feature-card reveal glass"><h3 data-lang="feature_2_title">Leaderboards & Stats</h3><p data-lang="feature_2_desc">Track your wins, losses, and draws. Climb the leaderboard to become the champion.</p></div>
-          <div class="feature-card reveal glass"><h3 data-lang="feature_3_title">Multi-Language Support</h3><p data-lang="feature_3_desc">Play in Thai, English, or Japanese. The bot adapts to your preferred language.</p></div>
+          <div class="feature-card reveal glass"><h3 class="on-glass-strong" data-lang="feature_1_title">Play with Friends or Bot</h3><p class="on-glass-soft" data-lang="feature_1_desc">Challenge a friend for a classic match or test your skills against our smart AI.</p></div>
+          <div class="feature-card reveal glass"><h3 class="on-glass-strong" data-lang="feature_2_title">Leaderboards & Stats</h3><p class="on-glass-soft" data-lang="feature_2_desc">Track your wins, losses, and draws. Climb the leaderboard to become the champion.</p></div>
+          <div class="feature-card reveal glass"><h3 class="on-glass-strong" data-lang="feature_3_title">Multi-Language Support</h3><p class="on-glass-soft" data-lang="feature_3_desc">Play in Thai, English, or Japanese. The bot adapts to your preferred language.</p></div>
         </div>
       </div>
     </section>
 
     <section id="commands" class="content-section">
       <div class="container">
-        <h2 class="section-title reveal" data-lang="commands_title">All Commands</h2>
+        <h2 class="section-title reveal on-glass-strong" data-lang="commands_title">All Commands</h2>
         <div class="commands-grid">
-          <div class="command-card reveal glass"><h3>/play <span>@opponent</span></h3><p data-lang="cmd_play">Starts a game with another player.</p></div>
-          <div class="command-card reveal glass"><h3>/playbot</h3><p data-lang="cmd_playbot">Starts a game against the AI bot.</p></div>
-          <div class="command-card reveal glass"><h3>/stop</h3><p data-lang="cmd_stop">Stops the current game.</p></div>
-          <div class="command-card reveal glass"><h3>/leaderboard</h3><p data-lang="cmd_leaderboard">Shows the server's top players.</p></div>
-          <div class="command-card reveal glass"><h3>/stats <span>[user]</span></h3><p data-lang="cmd_stats">View your or another player's stats.</p></div>
-          <div class="command-card reveal glass"><h3>/setlanguage <span>[th/en/jp]</span></h3><p data-lang="cmd_setlanguage">Changes the bot's language.</p></div>
+          <div class="command-card reveal glass"><h3 class="on-glass-strong">/play <span>@opponent</span></h3><p class="on-glass-soft" data-lang="cmd_play">Starts a game with another player.</p></div>
+          <div class="command-card reveal glass"><h3 class="on-glass-strong">/playbot</h3><p class="on-glass-soft" data-lang="cmd_playbot">Starts a game against the AI bot.</p></div>
+          <div class="command-card reveal glass"><h3 class="on-glass-strong">/stop</h3><p class="on-glass-soft" data-lang="cmd_stop">Stops the current game.</p></div>
+          <div class="command-card reveal glass"><h3 class="on-glass-strong">/leaderboard</h3><p class="on-glass-soft" data-lang="cmd_leaderboard">Shows the server's top players.</p></div>
+          <div class="command-card reveal glass"><h3 class="on-glass-strong">/stats <span>[user]</span></h3><p class="on-glass-soft" data-lang="cmd_stats">View your or another player's stats.</p></div>
+          <div class="command-card reveal glass"><h3 class="on-glass-strong">/setlanguage <span>[th/en/jp]</span></h3><p class="on-glass-soft" data-lang="cmd_setlanguage">Changes the bot's language.</p></div>
         </div>
       </div>
     </section>
@@ -259,7 +238,7 @@
 
   <script src="script.js"></script>
 
-  <!-- Include helper (ไม่จำเป็นในหน้า index เพราะมี footer อยู่แล้ว แต่เผื่อหน้าอื่น) -->
+  <!-- Include helper เผื่อใช้กับหน้าอื่น -->
   <script>
     (async function includePartials(){
       const slots = document.querySelectorAll('[data-include]');
