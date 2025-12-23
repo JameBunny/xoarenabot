@@ -8,7 +8,7 @@
     <link rel="icon" href="https://i.imgur.com/qqyb5eF.png">
 
     <style>
-        /* ====== Theme Variables (เพื่อให้แน่ใจว่าสวยแม้ไม่มีไฟล์ style.css) ====== */
+        /* ====== Theme Variables (Backup กรณี style.css โหลดไม่ติด) ====== */
         :root {
             --bg-1: #0b0f1a;
             --bg-2: #0a0d15;
@@ -19,6 +19,15 @@
             --glass-border: rgba(255, 255, 255, 0.1);
             --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             --card-hover: rgba(255, 255, 255, 0.12);
+        }
+        [data-theme="light"] {
+            --bg-1: #f7f9ff;
+            --bg-2: #eef2ff;
+            --text-1: #0a0f19;
+            --text-2: rgba(10, 15, 25, 0.7);
+            --glass-bg: rgba(255, 255, 255, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.9);
+            --card-hover: rgba(255, 255, 255, 0.8);
         }
 
         body {
@@ -31,168 +40,92 @@
             background-attachment: fixed;
             color: var(--text-1);
             min-height: 100vh;
+            transition: background 0.3s ease, color 0.3s ease;
         }
 
         /* ====== Layout ====== */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
 
         /* ====== Header ====== */
         .shop-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
-            margin-bottom: 40px;
-            border-bottom: 1px solid var(--glass-border);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 0; margin-bottom: 40px; border-bottom: 1px solid var(--glass-border);
         }
-
         .back-link {
-            text-decoration: none;
-            color: var(--text-2);
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: color 0.3s;
+            text-decoration: none; color: var(--text-2); font-weight: 500;
+            display: flex; align-items: center; gap: 8px; transition: color 0.3s;
         }
         .back-link:hover { color: var(--accent); }
-
         .header-controls { display: flex; gap: 15px; align-items: center; }
 
-        /* ปรับแต่ง Select และปุ่มธีมให้เข้ากับ Glass */
+        /* Controls */
         select, .theme-button {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            color: var(--text-1);
-            padding: 8px 12px;
-            border-radius: 8px;
-            cursor: pointer;
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            color: var(--text-1); padding: 8px 12px; border-radius: 8px; cursor: pointer;
+            backdrop-filter: blur(4px);
         }
+        /* SVG Icons inside Theme Button */
+        .theme-button svg { width: 20px; height: 20px; }
+        .theme-button .sun { display: none; } /* Default hide sun (assume dark mode) */
+        .theme-button .moon { display: block; }
+        
+        [data-theme="light"] .theme-button .sun { display: block; }
+        [data-theme="light"] .theme-button .moon { display: none; }
 
         /* ====== Shop Hero ====== */
-        .shop-hero {
-            text-align: center;
-            margin-bottom: 60px;
-        }
+        .shop-hero { text-align: center; margin-bottom: 60px; }
         .shop-hero h1 {
-            font-size: 3rem;
-            margin-bottom: 10px;
-            background: linear-gradient(to right, #fff, #00d4ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: 3rem; margin-bottom: 10px;
+            background: linear-gradient(to right, var(--text-1), var(--accent));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
         .shop-hero p { color: var(--text-2); font-size: 1.1rem; }
 
         /* ====== Product Grid ====== */
         .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 30px;
-            padding-bottom: 60px;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px; padding-bottom: 60px;
         }
 
         /* ====== Product Card ====== */
         .product-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            backdrop-filter: blur(10px);
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            border-radius: 20px; overflow: hidden; transition: all 0.3s ease;
+            position: relative; display: flex; flex-direction: column; backdrop-filter: blur(10px);
         }
-
         .product-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-            border-color: rgba(255,255,255,0.3);
+            transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.2);
             background: var(--card-hover);
         }
-
-        /* Badge (New / Best Seller) */
         .badge {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: #ff0055;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 50px;
-            font-size: 0.75rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            z-index: 2;
+            position: absolute; top: 15px; right: 15px; background: #ff0055;
+            color: white; padding: 4px 12px; border-radius: 50px; font-size: 0.75rem;
+            font-weight: bold; text-transform: uppercase; z-index: 2;
             box-shadow: 0 4px 10px rgba(255, 0, 85, 0.4);
         }
         .badge.best-seller { background: #00d4ff; box-shadow: 0 4px 10px rgba(0, 212, 255, 0.4); }
 
         .product-image-container {
-            width: 100%;
-            padding-top: 100%; /* 1:1 Aspect Ratio */
-            position: relative;
-            background: rgba(0,0,0,0.2);
-            overflow: hidden;
+            width: 100%; padding-top: 100%; position: relative;
+            background: rgba(0,0,0,0.05); overflow: hidden;
         }
-
         .product-image-container img {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* หรือ contain ถ้าอยากเห็นทั้งรูป */
-            transition: transform 0.5s ease;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; transition: transform 0.5s ease;
         }
+        .product-card:hover .product-image-container img { transform: scale(1.1); }
 
-        .product-card:hover .product-image-container img {
-            transform: scale(1.1);
-        }
-
-        .product-info {
-            padding: 20px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .product-title {
-            font-size: 1.1rem;
-            margin: 0 0 10px 0;
-            line-height: 1.4;
-            color: var(--text-1);
-        }
-
-        .price {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--accent);
-            margin-bottom: 20px;
-        }
+        .product-info { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
+        .product-title { font-size: 1.1rem; margin: 0 0 10px 0; line-height: 1.4; color: var(--text-1); }
+        .price { font-size: 1.5rem; font-weight: bold; color: var(--accent); margin-bottom: 20px; }
 
         .buy-button {
-            margin-top: auto;
-            display: block;
-            width: 100%;
-            padding: 12px;
-            text-align: center;
-            background: linear-gradient(90deg, #00d4ff, #005bea);
-            color: white;
-            text-decoration: none;
-            border-radius: 12px;
-            font-weight: 600;
-            transition: filter 0.2s, transform 0.2s;
+            margin-top: auto; display: block; width: 100%; padding: 12px;
+            text-align: center; background: linear-gradient(90deg, #00d4ff, #005bea);
+            color: white; text-decoration: none; border-radius: 12px; font-weight: 600;
+            transition: filter 0.2s, transform 0.2s; box-sizing: border-box;
         }
-        
-        .buy-button:hover {
-            filter: brightness(1.1);
-            transform: scale(1.02);
-            box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
-        }
+        .buy-button:hover { filter: brightness(1.1); transform: scale(1.02); }
     </style>
 </head>
 <body>
@@ -209,7 +142,8 @@
                     <option value="ja">🇯🇵 JP</option>
                 </select>
                 <button id="theme-toggle" class="theme-button" aria-label="Toggle Theme">
-                   ☀️/🌙
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.106a.75.75 0 010 1.06l-1.591 1.59a.75.75 0 11-1.06-1.061l1.59-1.591a.75.75 0 011.062 0zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.836 17.894a.75.75 0 011.06 0l1.591 1.591a.75.75 0 11-1.06 1.06l-1.591-1.59a.75.75 0 010-1.062zM12 21.75a.75.75 0 01-.75-.75v-2.25a.75.75 0 011.5 0V21a.75.75 0 01-.75.75zM5.106 17.894a.75.75 0 010-1.06l1.591-1.591a.75.75 0 111.06 1.06l-1.59 1.591a.75.75 0 01-1.062 0zM3 12a.75.75 0 01.75-.75h2.25a.75.75 0 010 1.5H3.75A.75.75 0 013 12zM6.164 7.164a.75.75 0 01-1.06 0L3.512 5.573a.75.75 0 011.06-1.06l1.591 1.59a.75.75 0 010 1.062z"/></path></svg>
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 004.463-.976.75.75 0 01.818.162l.522.522a.75.75 0 01-.102 1.071A9.353 9.353 0 0118 18a9.372 9.372 0 01-9.372-9.372 9.353 9.353 0 011.07-4.462l.522-.522a.75.75 0 011.072-.102z" clip-rule="evenodd" /></svg>
                 </button>
             </div>
         </header>
@@ -225,7 +159,7 @@
                 <div class="product-card">
                     <span class="badge">New Arrival</span>
                     <div class="product-image-container">
-                        <img src="https://stickershop.line-scdn.net/stickershop/v1/product/31896752/LINEStorePC/main.png" alt="New Nosu Sticker">
+                        <img src="https://stickershop.line-scdn.net/stickershop/v1/product/31896752/LINEStorePC/main.png" alt="Nosu Sticker Vol 2">
                     </div>
                     <div class="product-info">
                         <h2 class="product-title" data-lang="product2_name">Nosu Halloween Collection</h2>
@@ -252,31 +186,6 @@
 
     <div data-include="footer.html"></div>
 
-    <script src="script.js"></script> 
-    
-    <script>
-        // Script ย่อยสำหรับหน้านี้ (ถ้าจำเป็น)
-        // จัดการ Theme Toggle เบื้องต้น
-        const themeToggle = document.getElementById('theme-toggle');
-        const html = document.documentElement;
-        
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = html.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            html.setAttribute('data-theme', newTheme);
-        });
-        
-        // Include footer logic (กรณี script.js ยังไม่ทำงาน)
-        (async function includePartials(){
-            const slots = document.querySelectorAll('[data-include]');
-            for (const el of slots){
-                const path = el.getAttribute('data-include');
-                try {
-                    const res = await fetch(path);
-                    if(res.ok) el.innerHTML = await res.text();
-                } catch(e) {}
-            }
-        })();
-    </script>
+    <script src="shop_script.js"></script>
 </body>
 </html>
