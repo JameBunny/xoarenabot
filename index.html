@@ -104,40 +104,69 @@
     .slides { border-radius: calc(var(--radius-2xl) - 6px); }
     .hero-section { background: transparent !important; padding-top: 110px; }
 
-    /* ====== REFINED COUNTDOWN (จัดระเบียบใหม่: กลาง + สวยหรู) ====== */
+    /* ====== REFINED COUNTDOWN (จัดระเบียบใหม่: Scroll Text) ====== */
     .countdown-wrapper {
-      /* จัดให้เป็นแนวตั้ง: หัวข้ออยู่บน เวลากล่องอยู่ล่าง */
       display: flex;
       flex-direction: column;
       align-items: center; 
       justify-content: center;
-      margin-bottom: 40px; /* เว้นระยะห่างจากด้านล่าง */
+      margin-bottom: 40px;
       position: relative;
       z-index: 10;
     }
     
-    .countdown-title {
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 4px; /* ระยะห่างตัวอักษรให้ดูแพง */
-      font-weight: 700;
-      color: rgba(255, 255, 255, 0.9);
-      margin-bottom: 20px; /* ดันกล่องเวลาลงไป */
+    /* กรอบข้อความเลื่อน (Scrolling Container) */
+    .scrolling-title-container {
+      width: 260px; /* ความกว้างของกรอบข้อความ */
+      height: 36px;
+      overflow: hidden; /* ซ่อนส่วนที่เกิน */
+      position: relative;
+      margin-bottom: 20px;
       
-      /* ทำกรอบ Pill แบบบางๆ แทนสีทึบ */
+      /* ดีไซน์กรอบแก้ว */
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.15);
-      padding: 8px 24px;
       border-radius: 100px;
       backdrop-filter: blur(4px);
       box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      
+      /* ไล่เฟดหัวท้ายให้ดูเนียน (Mask) */
+      mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
+      
+      display: flex;
+      align-items: center;
+    }
+
+    /* รางวิ่งของข้อความ */
+    .scrolling-track {
+      display: flex;
+      white-space: nowrap; /* ห้ามขึ้นบรรทัดใหม่ */
+      animation: scrollText 8s linear infinite; /* ความเร็วในการวิ่ง */
+    }
+
+    /* ตัวข้อความข้างใน */
+    .scrolling-item {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.95);
+      padding-right: 40px; /* ระยะห่างระหว่างข้อความแต่ละชุด */
+      display: inline-block;
+    }
+    
+    /* Keyframes สำหรับการเลื่อน */
+    @keyframes scrollText {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); } /* เลื่อนไปครึ่งหนึ่ง (เพราะเราใส่ข้อความเบิ้ล 2 ชุด) */
     }
 
     .countdown-timer {
       display: flex;
-      gap: 16px; /* ระยะห่างระหว่างกล่อง */
+      gap: 16px;
       justify-content: center;
-      flex-wrap: wrap; /* รองรับมือถือ ไม่ให้ล้นจอ */
+      flex-wrap: wrap;
     }
 
     .time-block {
@@ -145,30 +174,22 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      
-      /* กล่องสีเข้ม Gradient เบาๆ */
       background: linear-gradient(145deg, rgba(30, 35, 45, 0.9), rgba(20, 25, 35, 0.95));
       border: 1px solid rgba(255, 255, 255, 0.1);
-      
-      /* ขนาดกล่อง Fix ให้เท่ากันเป๊ะๆ จะดูเป็นระเบียบ */
       width: 90px;
       height: 100px; 
       border-radius: 18px;
-      
-      /* เงาให้ดูลอย */
       box-shadow: 0 8px 20px rgba(0,0,0,0.3);
       position: relative;
       overflow: hidden;
       transition: transform 0.3s ease;
     }
 
-    /* Effect เวลาเอาเมาส์ชี้ */
     .time-block:hover {
       transform: translateY(-5px);
       border-color: rgba(255, 215, 0, 0.3);
     }
 
-    /* เส้นแสงด้านบนกล่องให้ดูมีมิติ */
     .time-block::before {
       content: '';
       position: absolute;
@@ -183,12 +204,9 @@
       line-height: 1;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       font-variant-numeric: tabular-nums;
-      
-      /* สีทอง ไล่เฉดให้ดูโลหะ */
       background: linear-gradient(180deg, #FFE5B4 0%, #FFD700 40%, #DAA520 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      
       filter: drop-shadow(0 2px 10px rgba(255, 215, 0, 0.25));
       margin-bottom: 5px;
     }
@@ -196,12 +214,11 @@
     .time-label {
       font-size: 0.65rem;
       font-weight: 600;
-      color: rgba(255, 255, 255, 0.5); /* สีจางลงเพื่อไม่แข่งกับตัวเลข */
+      color: rgba(255, 255, 255, 0.5);
       text-transform: uppercase;
       letter-spacing: 1px;
     }
 
-    /* ปรับมือถือ */
     @media (max-width: 600px) {
       .time-block { width: 70px; height: 80px; }
       .time-number { font-size: 1.8rem; }
@@ -209,7 +226,6 @@
       .countdown-timer { gap: 10px; }
     }
     
-    /* Animation for New Year */
     .new-year-message {
       display: none;
       font-size: 3rem;
@@ -226,16 +242,8 @@
     @keyframes shine { to { background-position: 200% center; } }
     @keyframes popIn { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 
-    /* Canvas for Fireworks */
     #fireworks-canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 9999;
-      display: none;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; display: none;
     }
   </style>
 </head>
@@ -279,7 +287,15 @@
       <div class="container hero-content glass glass-strong">
         
         <div class="countdown-wrapper reveal">
-          <div class="countdown-title">Countdown to 2026</div>
+          <div class="scrolling-title-container">
+            <div class="scrolling-track">
+              <span class="scrolling-item">COUNTDOWN TO 2026 ✦ </span>
+              <span class="scrolling-item">COUNTDOWN TO 2026 ✦ </span>
+              <span class="scrolling-item">COUNTDOWN TO 2026 ✦ </span>
+              <span class="scrolling-item">COUNTDOWN TO 2026 ✦ </span>
+            </div>
+          </div>
+          
           <div id="countdown-display" class="countdown-timer">
             <div class="time-block">
               <span class="time-number" id="days">00</span>
@@ -300,7 +316,6 @@
           </div>
           <div id="new-year-message" class="new-year-message">HAPPY NEW YEAR 2026! 🎉</div>
         </div>
-
         <h1 class="reveal on-glass-strong" data-lang="hero_title">The Ultimate Tic-Tac-Toe Experience.</h1>
         <p class="reveal on-glass-soft" data-lang="hero_subtitle">Challenge your friends or our smart AI. Simple, fun, and competitive.</p>
         <div class="cta-buttons reveal">
@@ -404,7 +419,6 @@
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       // 1. กำหนดวันเป้าหมาย (1 ม.ค. 2026 00:00:00 เวลาไทย)
-      // getTime() จะ return เป็น timestamp
       const targetDate = new Date("Jan 1, 2026 00:00:00 GMT+0700").getTime();
       
       const elDays = document.getElementById('days');
@@ -414,14 +428,12 @@
       const display = document.getElementById('countdown-display');
       const message = document.getElementById('new-year-message');
       
-      // ตัวแปรเช็คว่าเริ่มจุดพลุไปหรือยัง
       let fireworksStarted = false;
 
       const timer = setInterval(() => {
         const now = new Date().getTime();
         const distance = targetDate - now;
 
-        // ถ้ายังไม่ถึงเวลา
         if (distance > 0) {
           const d = Math.floor(distance / (1000 * 60 * 60 * 24));
           const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -433,14 +445,12 @@
           elMinutes.innerText = m < 10 ? '0' + m : m;
           elSeconds.innerText = s < 10 ? '0' + s : s;
         } else {
-          // ถึงเวลาแล้ว! (Countdown จบ)
           clearInterval(timer);
-          
-          // ซ่อนตัวนับเวลา แสดงข้อความ
           display.style.display = "none";
+          // ซ่อนแถบเลื่อนด้วยเมื่อถึงเวลาปีใหม่
+          document.querySelector('.scrolling-title-container').style.display = 'none';
           message.style.display = "block";
           
-          // เริ่มพลุ
           if (!fireworksStarted) {
             startFireworks();
             fireworksStarted = true;
@@ -448,14 +458,12 @@
         }
       }, 1000);
 
-      // --- LOGIC พลุ (Canvas Fireworks) ---
       function startFireworks() {
         const canvas = document.getElementById('fireworks-canvas');
         if(!canvas) return;
         canvas.style.display = 'block';
         const ctx = canvas.getContext('2d');
         
-        // ปรับขนาด canvas
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
         window.addEventListener('resize', () => {
@@ -489,17 +497,14 @@
             this.velocity.y += this.gravity;
             this.x += this.velocity.x;
             this.y += this.velocity.y;
-            this.alpha -= 0.008; // ค่อยๆ จางหาย
+            this.alpha -= 0.008;
           }
         }
 
-        // ฟังก์ชันจุดพลุ 1 ลูก
         function createFirework(x, y) {
-          const particleCount = 120; // จำนวนเม็ดสีต่อ 1 พลุ
+          const particleCount = 120;
           const color = colors[Math.floor(Math.random() * colors.length)];
-          
           for (let i = 0; i < particleCount; i++) {
-            // กระจายรอบทิศทาง
             const angle = Math.random() * Math.PI * 2;
             const speed = Math.random() * 5 + 2; 
             const velocity = {
@@ -510,12 +515,10 @@
           }
         }
 
-        // Loop Animation
         function animate() {
           requestAnimationFrame(animate);
-          // ทำ trail (หางพลุจางๆ)
           ctx.globalAlpha = 0.15;
-          ctx.fillStyle = 'rgba(0, 0, 0, 0.2)'; // พื้นหลังสีดำจางๆ เพื่อลบภาพเก่า
+          ctx.fillStyle = 'rgba(0, 0, 0, 0.2)'; 
           ctx.fillRect(0, 0, canvas.width, canvas.height);
           
           particles.forEach((particle, index) => {
@@ -530,15 +533,12 @@
         
         animate();
 
-        // ยิงพลุอัตโนมัติแบบสุ่ม
         setInterval(() => {
-           // สุ่มตำแหน่ง X (ซ้ายขวา), Y (ความสูงครึ่งบนจอ)
            const x = Math.random() * canvas.width;
            const y = Math.random() * (canvas.height / 2);
            createFirework(x, y);
-        }, 800); // ยิงทุกๆ 0.8 วินาที
+        }, 800);
         
-        // ยิงชุดใหญ่ตอนเริ่ม
         createFirework(canvas.width / 2, canvas.height / 3);
         setTimeout(() => createFirework(canvas.width / 4, canvas.height / 4), 300);
         setTimeout(() => createFirework(canvas.width * 0.75, canvas.height / 4), 600);
