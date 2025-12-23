@@ -104,34 +104,40 @@
     .slides { border-radius: calc(var(--radius-2xl) - 6px); }
     .hero-section { background: transparent !important; padding-top: 110px; }
 
-    /* ====== UPGRADED COUNTDOWN STYLES (แก้ตรงนี้ให้แล้วครับ) ====== */
+    /* ====== REFINED COUNTDOWN (จัดระเบียบใหม่: กลาง + สวยหรู) ====== */
     .countdown-wrapper {
-      margin-bottom: 35px;
-      text-align: center;
+      /* จัดให้เป็นแนวตั้ง: หัวข้ออยู่บน เวลากล่องอยู่ล่าง */
+      display: flex;
+      flex-direction: column;
+      align-items: center; 
+      justify-content: center;
+      margin-bottom: 40px; /* เว้นระยะห่างจากด้านล่าง */
       position: relative;
       z-index: 10;
     }
     
     .countdown-title {
-      font-size: 1.1rem;
+      font-size: 0.85rem;
       text-transform: uppercase;
-      letter-spacing: 4px;
-      margin-bottom: 15px;
-      font-weight: 800;
-      color: #fff;
-      background: rgba(0, 0, 0, 0.3); /* พื้นหลังดำจางๆ ให้ title อ่านง่าย */
-      display: inline-block;
-      padding: 4px 16px;
-      border-radius: 20px;
+      letter-spacing: 4px; /* ระยะห่างตัวอักษรให้ดูแพง */
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 20px; /* ดันกล่องเวลาลงไป */
+      
+      /* ทำกรอบ Pill แบบบางๆ แทนสีทึบ */
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 8px 24px;
+      border-radius: 100px;
       backdrop-filter: blur(4px);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
 
     .countdown-timer {
-      display: inline-flex;
-      gap: 20px;
+      display: flex;
+      gap: 16px; /* ระยะห่างระหว่างกล่อง */
       justify-content: center;
-      flex-wrap: wrap;
+      flex-wrap: wrap; /* รองรับมือถือ ไม่ให้ล้นจอ */
     }
 
     .time-block {
@@ -140,52 +146,67 @@
       align-items: center;
       justify-content: center;
       
-      /* ทำให้พื้นหลังเข้มขึ้น เพื่อดันตัวเลขสีทองให้เด่น */
-      background: rgba(13, 18, 30, 0.75); 
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-top: 1px solid rgba(255, 255, 255, 0.4);
+      /* กล่องสีเข้ม Gradient เบาๆ */
+      background: linear-gradient(145deg, rgba(30, 35, 45, 0.9), rgba(20, 25, 35, 0.95));
+      border: 1px solid rgba(255, 255, 255, 0.1);
       
-      padding: 15px 20px;
-      border-radius: 16px;
-      min-width: 85px;
+      /* ขนาดกล่อง Fix ให้เท่ากันเป๊ะๆ จะดูเป็นระเบียบ */
+      width: 90px;
+      height: 100px; 
+      border-radius: 18px;
       
-      backdrop-filter: blur(12px);
-      box-shadow: 
-        0 10px 30px rgba(0,0,0,0.4),
-        0 0 0 1px rgba(255,255,255,0.05) inset;
-        
-      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      /* เงาให้ดูลอย */
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease;
     }
 
+    /* Effect เวลาเอาเมาส์ชี้ */
     .time-block:hover {
-      transform: translateY(-5px) scale(1.05);
-      background: rgba(13, 18, 30, 0.85);
-      border-color: rgba(255, 215, 0, 0.5);
+      transform: translateY(-5px);
+      border-color: rgba(255, 215, 0, 0.3);
+    }
+
+    /* เส้นแสงด้านบนกล่องให้ดูมีมิติ */
+    .time-block::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.5), transparent);
     }
 
     .time-number {
-      font-size: 2.8rem; /* เพิ่มขนาดตัวเลข */
-      font-weight: 900;
+      font-size: 2.6rem;
+      font-weight: 800;
       line-height: 1;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       font-variant-numeric: tabular-nums;
       
-      /* สีทองไล่เฉด (Gold Gradient) */
-      background: linear-gradient(180deg, #FFF 10%, #FFD700 100%);
+      /* สีทอง ไล่เฉดให้ดูโลหะ */
+      background: linear-gradient(180deg, #FFE5B4 0%, #FFD700 40%, #DAA520 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       
-      /* ใส่ Glow ให้สว่าง */
-      filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.4));
-      
-      margin-bottom: 2px;
+      filter: drop-shadow(0 2px 10px rgba(255, 215, 0, 0.25));
+      margin-bottom: 5px;
     }
 
     .time-label {
-      font-size: 0.75rem;
+      font-size: 0.65rem;
       font-weight: 600;
-      color: rgba(255, 255, 255, 0.6);
+      color: rgba(255, 255, 255, 0.5); /* สีจางลงเพื่อไม่แข่งกับตัวเลข */
       text-transform: uppercase;
       letter-spacing: 1px;
+    }
+
+    /* ปรับมือถือ */
+    @media (max-width: 600px) {
+      .time-block { width: 70px; height: 80px; }
+      .time-number { font-size: 1.8rem; }
+      .countdown-wrapper { margin-bottom: 30px; }
+      .countdown-timer { gap: 10px; }
     }
     
     /* Animation for New Year */
