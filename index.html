@@ -104,72 +104,106 @@
     .slides { border-radius: calc(var(--radius-2xl) - 6px); }
     .hero-section { background: transparent !important; padding-top: 110px; }
 
-    /* ====== NEW: Countdown Styles ====== */
+    /* ====== UPGRADED COUNTDOWN STYLES (แก้ตรงนี้ให้แล้วครับ) ====== */
     .countdown-wrapper {
-      margin-bottom: 25px;
+      margin-bottom: 35px;
       text-align: center;
+      position: relative;
+      z-index: 10;
     }
+    
     .countdown-title {
-      font-size: 0.9rem;
+      font-size: 1.1rem;
       text-transform: uppercase;
-      letter-spacing: 2px;
-      margin-bottom: 10px;
-      font-weight: 600;
-      color: var(--text-2);
-      text-shadow: 0 0 10px rgba(255,255,255,0.3);
+      letter-spacing: 4px;
+      margin-bottom: 15px;
+      font-weight: 800;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.3); /* พื้นหลังดำจางๆ ให้ title อ่านง่าย */
+      display: inline-block;
+      padding: 4px 16px;
+      border-radius: 20px;
+      backdrop-filter: blur(4px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     }
+
     .countdown-timer {
       display: inline-flex;
-      gap: 15px;
+      gap: 20px;
       justify-content: center;
       flex-wrap: wrap;
     }
+
     .time-block {
       display: flex;
       flex-direction: column;
       align-items: center;
-      background: rgba(0, 0, 0, 0.2);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 10px 15px;
-      border-radius: 12px;
-      min-width: 70px;
-      backdrop-filter: blur(5px);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+      justify-content: center;
+      
+      /* ทำให้พื้นหลังเข้มขึ้น เพื่อดันตัวเลขสีทองให้เด่น */
+      background: rgba(13, 18, 30, 0.75); 
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-top: 1px solid rgba(255, 255, 255, 0.4);
+      
+      padding: 15px 20px;
+      border-radius: 16px;
+      min-width: 85px;
+      
+      backdrop-filter: blur(12px);
+      box-shadow: 
+        0 10px 30px rgba(0,0,0,0.4),
+        0 0 0 1px rgba(255,255,255,0.05) inset;
+        
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
+
+    .time-block:hover {
+      transform: translateY(-5px) scale(1.05);
+      background: rgba(13, 18, 30, 0.85);
+      border-color: rgba(255, 215, 0, 0.5);
+    }
+
     .time-number {
-      font-size: 1.8rem;
-      font-weight: 700;
-      font-variant-numeric: tabular-nums; /* ป้องกันตัวเลขขยับไปมา */
+      font-size: 2.8rem; /* เพิ่มขนาดตัวเลข */
+      font-weight: 900;
       line-height: 1;
-      background: linear-gradient(180deg, #fff, #ccc);
+      font-variant-numeric: tabular-nums;
+      
+      /* สีทองไล่เฉด (Gold Gradient) */
+      background: linear-gradient(180deg, #FFF 10%, #FFD700 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      
+      /* ใส่ Glow ให้สว่าง */
+      filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.4));
+      
+      margin-bottom: 2px;
     }
+
     .time-label {
-      font-size: 0.7rem;
-      margin-top: 4px;
-      opacity: 0.8;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.6);
       text-transform: uppercase;
+      letter-spacing: 1px;
     }
     
     /* Animation for New Year */
     .new-year-message {
       display: none;
-      font-size: 2.5rem;
-      font-weight: 800;
-      color: #fff;
-      text-align: center;
-      animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      background: linear-gradient(to right, #FFD700, #FFF, #FFD700);
+      font-size: 3rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-top: 20px;
+      background: linear-gradient(to right, #C6FFDD, #FBD786, #f7797d);
+      background-size: 200% auto;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+      animation: shine 3s linear infinite, popIn 0.5s ease-out;
+      text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
     }
-    @keyframes popIn {
-      0% { transform: scale(0); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
-    }
+    @keyframes shine { to { background-position: 200% center; } }
+    @keyframes popIn { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 
     /* Canvas for Fireworks */
     #fireworks-canvas {
@@ -180,7 +214,7 @@
       height: 100%;
       pointer-events: none;
       z-index: 9999;
-      display: none; /* Hide until triggered */
+      display: none;
     }
   </style>
 </head>
@@ -245,6 +279,7 @@
           </div>
           <div id="new-year-message" class="new-year-message">HAPPY NEW YEAR 2026! 🎉</div>
         </div>
+
         <h1 class="reveal on-glass-strong" data-lang="hero_title">The Ultimate Tic-Tac-Toe Experience.</h1>
         <p class="reveal on-glass-soft" data-lang="hero_subtitle">Challenge your friends or our smart AI. Simple, fun, and competitive.</p>
         <div class="cta-buttons reveal">
