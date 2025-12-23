@@ -1,53 +1,123 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- Theme Switcher ---
+    // --- 1. Theme Switcher (ระบบเปลี่ยนธีม) ---
     const themeToggle = document.getElementById('theme-toggle');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const savedTheme = localStorage.getItem('theme') || (prefersDark ? 'dark' : 'light');
-    document.documentElement.setAttribute('data-theme', savedTheme);
-    themeToggle.addEventListener('click', () => {
-        let newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
-    });
+    const htmlElement = document.documentElement;
+    
+    // ตรวจสอบธีมที่เคยบันทึกไว้ หรือใช้ค่าเริ่มต้นจากระบบ
+    const savedTheme = localStorage.getItem('theme') || 
+                       (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    
+    htmlElement.setAttribute('data-theme', savedTheme);
+    updateThemeIcon(savedTheme); // อัปเดตไอคอนตอนโหลด
 
-    // --- Language Translation (เพิ่มคำแปลสำหรับ Title และ Subtitle) ---
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            htmlElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+    }
+
+    // ฟังก์ชันเปลี่ยนไอคอน (ถ้าปุ่มมี SVG หรือ Text)
+    function updateThemeIcon(theme) {
+        if (!themeToggle) return;
+        // ถ้าคุณใช้ Text emoji ในปุ่ม
+        if (themeToggle.innerText.match(/☀️|🌙/)) {
+             themeToggle.innerText = theme === 'dark' ? '🌙' : '☀️';
+        }
+        // ถ้าคุณใช้ SVG (แบบซ่อน/แสดง class)
+        const sunIcon = themeToggle.querySelector('.sun');
+        const moonIcon = themeToggle.querySelector('.moon');
+        if (sunIcon && moonIcon) {
+            if (theme === 'dark') {
+                sunIcon.style.display = 'none';
+                moonIcon.style.display = 'block';
+            } else {
+                sunIcon.style.display = 'block';
+                moonIcon.style.display = 'none';
+            }
+        }
+    }
+
+    // --- 2. Language Translation (ระบบแปลภาษา) ---
     const translations = {
         en: {
-            shop_title: "Shop",
-            shop_subtitle: "Exclusive items from NosuTeam.",
-            product1_name: "Nosu 1st Anniversary LINE Sticker",
-            product1_price: "THB 31",
+            shop_title: "Nosu Store",
+            shop_subtitle: "Premium stickers & digital goods for our community.",
+            
+            // Product 1 (Old)
+            product1_name: "Nosu 1st Anniversary Sticker",
+            product1_price: "฿35",
+            
+            // Product 2 (New)
+            product2_name: "NosuTeam Sticker Vol. 2",
+            product2_price: "฿35",
+            
             buy_button: "Buy Now"
         },
         th: {
-            shop_title: "ร้านค้า",
-            shop_subtitle: "สินค้าสุดพิเศษจาก NosuTeam",
-            product1_name: "สติ๊กเกอร์ไลน์ Nosu ครบรอบ 1 ปี",
-            product1_price: "฿31",
+            shop_title: "Nosu Store",
+            shop_subtitle: "สติ๊กเกอร์และสินค้าดิจิทัลสุดพิเศษสำหรับชาวแก๊ง",
+            
+            // Product 1
+            product1_name: "สติ๊กเกอร์ Nosu ฉลองครบ 1 ปี",
+            product1_price: "฿35",
+            
+            // Product 2
+            product2_name: "Nosu Halloween Collection",
+            product2_price: "฿35",
+            
             buy_button: "ซื้อเลย"
         },
         ja: {
-            shop_title: "ショップ",
-            shop_subtitle: "NosuTeamからの限定アイテム",
-            product1_name: "ノス1周年記念LINEスタンプ",
-            product1_price: "THB 31",
+            shop_title: "Nosu Store",
+            shop_subtitle: "コミュニティのためのプレミアムスタンプ＆デジタルグッズ",
+            
+            // Product 1
+            product1_name: "Nosu 1周年記念スタンプ",
+            product1_price: "฿35",
+            
+            // Product 2
+            product2_name: "Nosu Halloween Collection",
+            product2_price: "฿35",
+            
             buy_button: "今すぐ購入"
         }
     };
 
     const langSwitcher = document.getElementById('lang-switcher');
+    
     const setLanguage = (lang) => {
+        if (!translations[lang]) return;
+
+        // อัปเดต attribute lang ของ html
         document.documentElement.lang = lang;
+        
+        // วนลูปหา element ที่มี data-lang ทั้งหมดในหน้า
         document.querySelectorAll('[data-lang]').forEach(el => {
             const key = el.getAttribute('data-lang');
-            if (translations[lang]?.[key]) {
+            if (translations[lang][key]) {
                 el.textContent = translations[lang][key];
             }
         });
+
+        // บันทึกค่าลง localStorage
         localStorage.setItem('xo-arena-lang', lang);
-        langSwitcher.value = lang;
+        
+        // อัปเดตค่าใน select box
+        if (langSwitcher) {
+            langSwitcher.value = lang;
+        }
     };
-    langSwitcher.addEventListener('change', (e) => setLanguage(e.target.value));
+
+    if (langSwitcher) {
+        langSwitcher.addEventListener('change', (e) => setLanguage(e.target.value));
+    }
+
+    // โหลดภาษาที่บันทึกไว้ หรือใช้ค่า Default เป็น 'en'
     setLanguage(localStorage.getItem('xo-arena-lang') || 'en');
 });
