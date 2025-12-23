@@ -1,6 +1,28 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- 1. Theme Switcher (ระบบเปลี่ยนธีม) ---
+    // ==========================================
+    // 1. INCLUDE PARTIALS (โหลด Footer - สำคัญมาก ต้องมี!)
+    // ==========================================
+    async function includePartials() {
+        const slots = document.querySelectorAll('[data-include]');
+        for (const el of slots) {
+            const path = el.getAttribute('data-include');
+            try {
+                const res = await fetch(path);
+                if (res.ok) {
+                    el.outerHTML = await res.text();
+                }
+            } catch (e) {
+                console.error('Failed to load partial:', path);
+            }
+        }
+    }
+    includePartials();
+
+
+    // ==========================================
+    // 2. THEME SWITCHER (ระบบเปลี่ยนธีม)
+    // ==========================================
     const themeToggle = document.getElementById('theme-toggle');
     const htmlElement = document.documentElement;
     
@@ -22,14 +44,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ฟังก์ชันเปลี่ยนไอคอน (ถ้าปุ่มมี SVG หรือ Text)
+    // ฟังก์ชันเปลี่ยนไอคอน (รองรับทั้ง SVG และ Text Emoji)
     function updateThemeIcon(theme) {
         if (!themeToggle) return;
-        // ถ้าคุณใช้ Text emoji ในปุ่ม
+        
+        // กรณีใช้ Text emoji (เผื่อไว้)
         if (themeToggle.innerText.match(/☀️|🌙/)) {
              themeToggle.innerText = theme === 'dark' ? '🌙' : '☀️';
         }
-        // ถ้าคุณใช้ SVG (แบบซ่อน/แสดง class)
+        
+        // กรณีใช้ SVG (ตามไฟล์ shop.html ล่าสุด)
         const sunIcon = themeToggle.querySelector('.sun');
         const moonIcon = themeToggle.querySelector('.moon');
         if (sunIcon && moonIcon) {
@@ -43,7 +67,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- 2. Language Translation (ระบบแปลภาษา) ---
+
+    // ==========================================
+    // 3. LANGUAGE TRANSLATION (ระบบแปลภาษา)
+    // ==========================================
     const translations = {
         en: {
             shop_title: "Nosu Store",
@@ -54,13 +81,13 @@ document.addEventListener('DOMContentLoaded', () => {
             product1_price: "฿35",
             
             // Product 2 (New)
-            product2_name: "NosuTeam Sticker Vol. 2",
+            product2_name: "Nosu Halloween Collection", // แก้ให้ตรงกับ HTML
             product2_price: "฿35",
             
             buy_button: "Buy Now"
         },
         th: {
-            shop_title: "Nosu Store",
+            shop_title: "ร้านค้า Nosu",
             shop_subtitle: "สติ๊กเกอร์และสินค้าดิจิทัลสุดพิเศษสำหรับชาวแก๊ง",
             
             // Product 1
@@ -68,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
             product1_price: "฿35",
             
             // Product 2
-            product2_name: "Nosu Halloween Collection",
+            product2_name: "สติ๊กเกอร์ Nosu คอลเลกชันฮาโลวีน",
             product2_price: "฿35",
             
             buy_button: "ซื้อเลย"
@@ -82,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
             product1_price: "฿35",
             
             // Product 2
-            product2_name: "Nosu Halloween Collection",
+            product2_name: "Nosu ハロウィンコレクション",
             product2_price: "฿35",
             
             buy_button: "今すぐ購入"
@@ -105,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // บันทึกค่าลง localStorage
+        // บันทึกค่าลง localStorage (ใช้ key เดียวกับหน้า index เพื่อให้ sync กัน)
         localStorage.setItem('xo-arena-lang', lang);
         
         // อัปเดตค่าใน select box
