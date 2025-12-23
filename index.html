@@ -67,7 +67,7 @@
     }
 
     /* Spacing & Components */
-    .main-header .container.glass { margin-top: 14px; padding: 10px 16px; position: relative; z-index: 10001; }
+    .main-header .container.glass { margin-top: 14px; padding: 10px 16px; position: relative; z-index: 50; }
     .hero-section .hero-content.glass { padding: 28px; }
     .feature-card.glass, .command-card.glass { padding: 18px; transition: transform .2s ease, box-shadow .2s ease; }
     .feature-card.glass:hover, .command-card.glass:hover { transform: translateY(-4px); box-shadow: 0 28px 60px rgba(0,0,0,0.42); }
@@ -94,7 +94,7 @@
     .scrolling-track { display: flex; white-space: nowrap; animation: scrollText 8s linear infinite; }
     .scrolling-item {
       font-size: 0.85rem; text-transform: uppercase; letter-spacing: 3px; font-weight: 700;
-      color: #000; /* สีดำตามที่ขอ */
+      color: rgba(255, 255, 255, 0.9);
       padding-right: 40px; display: inline-block;
     }
     @keyframes scrollText { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
@@ -119,107 +119,130 @@
     }
     .time-label { font-size: 0.65rem; font-weight: 600; color: rgba(255, 255, 255, 0.5); text-transform: uppercase; }
 
-    /* ====== CELEBRATION OVERLAY (แก้ไขใหม่ให้ลอยเหนือพลุ) ====== */
+    /* ====== CELEBRATION OVERLAY (FULL SCREEN) ====== */
     .celebration-overlay {
       display: none; /* ซ่อนตอนแรก */
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
-      z-index: 10002; /* ต้องสูงกว่า Canvas (10000) */
-      pointer-events: none; /* ให้คลิกทะลุได้ในพื้นที่ว่าง */
-      
-      /* จัดกึ่งกลาง */
+      z-index: 99999; /* สูงที่สุด */
+      background: radial-gradient(circle at center, rgba(10, 15, 30, 0.8), #000);
+      backdrop-filter: blur(5px);
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      background: rgba(0,0,0,0.3); /* พื้นหลังจางๆ เพื่อให้อ่านตัวหนังสือออก */
-      backdrop-filter: blur(2px);
+      overflow: hidden;
     }
 
-    /* กล่องเนื้อหาปีใหม่ (ให้กดปุ่มได้) */
+    /* กล่องข้อความกลางจอ */
     .celebration-content {
-      pointer-events: auto; /* เปิดให้กดปุ่มได้ */
       text-align: center;
-      padding: 30px;
-      border-radius: 20px;
-      background: rgba(0, 0, 0, 0.6);
-      border: 1px solid rgba(255, 215, 0, 0.3);
-      box-shadow: 0 0 50px rgba(255, 215, 0, 0.2);
-      animation: zoomIn 0.5s ease-out;
-      max-width: 90%;
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 900px;
+      padding: 20px;
     }
 
-    @keyframes zoomIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-
-    .rotating-msg-wrapper { min-height: 120px; display: flex; flex-direction: column; justify-content: center; }
-
+    /* ข้อความ Happy New Year */
     .hny-title {
-      font-size: 2.5rem; font-weight: 900; text-transform: uppercase; margin-bottom: 15px;
-      background: linear-gradient(to right, #FFF, #FFD700, #FFF); background-size: 200% auto;
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      animation: shine 3s linear infinite; text-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
-      line-height: 1.2; transition: opacity 0.5s ease;
+      font-size: 4rem; 
+      font-weight: 900; 
+      margin-bottom: 10px;
+      background: linear-gradient(to bottom, #fff, #b9eaff, #fff);
+      -webkit-background-clip: text; 
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 20px rgba(0, 212, 255, 0.8), 0 0 40px rgba(0, 212, 255, 0.4);
+      animation: float 3s ease-in-out infinite;
+      line-height: 1.1;
+      transition: opacity 0.8s ease;
     }
-    .hny-subtitle {
-      font-size: 1.1rem; color: #eee; font-weight: 500;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.8); transition: opacity 0.5s ease;
-    }
-    @keyframes shine { to { background-position: 200% center; } }
 
-    /* Controls */
-    .music-controls {
-      display: flex; align-items: center; justify-content: center; gap: 15px;
-      margin-top: 25px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);
+    .hny-subtitle {
+      font-size: 1.5rem; 
+      color: #fff; 
+      font-weight: 300;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+      margin-top: 15px;
+      letter-spacing: 1px;
+      transition: opacity 0.8s ease;
     }
-    .music-btn { background: none; border: none; color: #FFD700; font-size: 1.5rem; cursor: pointer; }
-    .music-btn:hover { transform: scale(1.1); }
-    
-    .volume-slider { -webkit-appearance: none; width: 100px; height: 4px; background: rgba(255,255,255,0.3); border-radius: 5px; }
-    .volume-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%; background: #FFD700; cursor: pointer; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* Control Bar (Music & Close) */
+    .control-bar {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 10px 20px;
+      border-radius: 50px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      z-index: 10;
+    }
+
+    .music-btn {
+      background: none; border: none; color: #fff; font-size: 1.2rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .music-btn:hover { transform: scale(1.1); color: var(--link-1); }
+
+    .volume-slider {
+      -webkit-appearance: none; width: 80px; height: 4px; background: rgba(255, 255, 255, 0.3); border-radius: 5px;
+    }
+    .volume-slider::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: #fff; cursor: pointer;
+    }
 
     .close-celebration {
-      background: transparent; border: 2px solid #FF3333; color: #FF3333;
-      padding: 8px 20px; border-radius: 30px; font-weight: bold; cursor: pointer;
-      margin-left: 15px; transition: all 0.2s;
+      background: rgba(255, 50, 50, 0.8); border: none; color: #fff;
+      width: 30px; height: 30px; border-radius: 50%;
+      font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s; margin-left: 10px;
     }
-    .close-celebration:hover { background: #FF3333; color: white; }
+    .close-celebration:hover { background: #ff0000; transform: rotate(90deg); }
 
     /* Canvas (Fireworks) */
     #fireworks-canvas {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      pointer-events: none; z-index: 10000; display: none;
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;
     }
     
     /* Responsive */
     @media (max-width: 600px) {
-      .hny-title { font-size: 1.8rem; }
-      .hny-subtitle { font-size: 0.9rem; }
-      .celebration-content { padding: 20px; width: 85%; }
+      .hny-title { font-size: 2.5rem; }
+      .hny-subtitle { font-size: 1rem; }
+      .control-bar { top: 15px; right: 15px; padding: 8px 15px; }
+      .volume-slider { width: 60px; }
     }
   </style>
 </head>
 <body>
 
-  <canvas id="fireworks-canvas"></canvas>
-
   <div id="celebration-overlay" class="celebration-overlay">
-    <div class="celebration-content">
-      <div class="rotating-msg-wrapper">
-        <div id="hny-text" class="hny-title">HAPPY NEW YEAR 2026!</div>
-        <div id="thank-text" class="hny-subtitle">Thank you for your support throughout the year.</div>
-      </div>
-      
-      <div class="music-controls">
-        <button id="music-toggle" class="music-btn" title="Mute/Unmute">🔊</button>
-        <input type="range" id="volume-slider" class="volume-slider" min="0" max="1" step="0.1" value="0.5">
-        <button id="stop-celebration" class="close-celebration">Close</button>
-      </div>
-      
-      <audio id="hny-music" loop>
-        <source src="song.mp3" type="audio/mpeg">
-      </audio>
-    </div>
-  </div>
+    <canvas id="fireworks-canvas"></canvas>
 
+    <div class="control-bar">
+      <button id="music-toggle" class="music-btn" title="Mute/Unmute">🔊</button>
+      <input type="range" id="volume-slider" class="volume-slider" min="0" max="1" step="0.1" value="0.5">
+      <button id="stop-celebration" class="close-celebration" title="Close">✕</button>
+    </div>
+
+    <div class="celebration-content">
+      <div id="hny-text" class="hny-title">HAPPY NEW YEAR 2026!</div>
+      <div id="thank-text" class="hny-subtitle">Wishing you warmth and happiness.</div>
+    </div>
+    
+    <audio id="hny-music" loop>
+      <source src="song.mp3" type="audio/mpeg">
+    </audio>
+  </div>
   <header class="main-header">
     <nav class="container glass" role="navigation" aria-label="Main">
       <a href="index.html" class="logo-link">
@@ -250,10 +273,10 @@
         <div class="countdown-wrapper reveal">
           <div class="scrolling-title-container">
             <div class="scrolling-track">
-              <span class="scrolling-item">COUNTDOWN TO 2026 ✦ </span>
-              <span class="scrolling-item">COUNTDOWN TO 2026 ✦ </span>
-              <span class="scrolling-item">COUNTDOWN TO 2026 ✦ </span>
-              <span class="scrolling-item">COUNTDOWN TO 2026 ✦ </span>
+              <span class="scrolling-item" id="scroll-text-1">COUNTDOWN TO 2026 ✦ </span>
+              <span class="scrolling-item" id="scroll-text-2">COUNTDOWN TO 2026 ✦ </span>
+              <span class="scrolling-item" id="scroll-text-3">COUNTDOWN TO 2026 ✦ </span>
+              <span class="scrolling-item" id="scroll-text-4">COUNTDOWN TO 2026 ✦ </span>
             </div>
           </div>
           
@@ -334,16 +357,14 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // 🔴 โหมดทดสอบ (5 วินาที)
-      const targetDate = new Date().getTime() + 5000; 
-      // 🟢 วันจริง (เอา comment ออกเมื่อจะใช้งานจริง)
+      // 🔴🔴 ตั้งค่าเวลา: เปลี่ยน +5000 เป็นวันที่จริง 🔴🔴
       // const targetDate = new Date("Jan 1, 2026 00:00:00 GMT+0700").getTime();
+      const targetDate = new Date().getTime() + 5000; 
 
       const elDays = document.getElementById('days');
       const elHours = document.getElementById('hours');
       const elMinutes = document.getElementById('minutes');
       const elSeconds = document.getElementById('seconds');
-      const display = document.getElementById('countdown-display');
       
       const overlay = document.getElementById('celebration-overlay');
       const hnyText = document.getElementById('hny-text');
@@ -356,11 +377,11 @@
       let fireworksStarted = false;
       let rotateInterval = null;
 
-      // ข้อความหมุนเวียน 3 ภาษา
+      // ข้อความ 3 ภาษา
       const messages = [
-        { hny: "HAPPY NEW YEAR 2026!", sub: "Thank you for your support throughout the year." },
-        { hny: "สวัสดีปีใหม่ 2569!", sub: "ขอบคุณที่สนับสนุนพวกเราตลอดมา" },
-        { hny: "あけましておめでとう 2026!", sub: "今年もよろしくお願いいたします。" }
+        { hny: "HAPPY NEW YEAR 2026!", sub: "Wishing you warmth and happiness." },
+        { hny: "สวัสดีปีใหม่ 2569!", sub: "ขอให้มีความสุขและสุขภาพแข็งแรง" },
+        { hny: "あけましておめでとう 2026!", sub: "今年もよろしくお願いいたします" }
       ];
       let msgIndex = 0;
 
@@ -381,11 +402,15 @@
         } else {
           clearInterval(timer);
           
-          // ซ่อนตัวนับเวลา
-          if(display) display.style.display = "none";
-          document.querySelector('.scrolling-title-container').style.display = 'none';
+          // 1. ตั้งเลขเป็น 00 ตลอดไป
+          elDays.innerText = "00"; elHours.innerText = "00";
+          elMinutes.innerText = "00"; elSeconds.innerText = "00";
 
-          // เปิด Overlay (แสดงข้อความและปุ่มเหนือพลุ)
+          // 2. เปลี่ยนข้อความวิ่งเป็น Happy New Year
+          const scrollItems = document.querySelectorAll('.scrolling-item');
+          scrollItems.forEach(item => item.innerText = "HAPPY NEW YEAR 2026 ✦ ");
+
+          // 3. เปิด Overlay พลุ
           overlay.style.display = 'flex';
           
           if (!fireworksStarted) {
@@ -397,12 +422,10 @@
       }, 1000);
 
       function startCelebration() {
-        // เล่นเพลง
         if(audio) {
             audio.volume = 0.5;
             audio.play().catch(e => console.log("Autoplay blocked"));
         }
-        // หมุนข้อความ
         rotateInterval = setInterval(() => {
             msgIndex = (msgIndex + 1) % messages.length;
             hnyText.style.opacity = 0; thankText.style.opacity = 0;
@@ -414,12 +437,14 @@
         }, 3500);
       }
 
-      // ปุ่มปิด
+      // ปุ่มปิด (ปิด Overlay แต่หน้าเว็บหลักยังอยู่พร้อมเลข 00)
       stopBtn.addEventListener('click', () => {
-          document.getElementById('fireworks-canvas').style.display = 'none';
           overlay.style.display = 'none';
           if(audio) { audio.pause(); audio.currentTime = 0; }
           if(rotateInterval) clearInterval(rotateInterval);
+          // หยุดพลุเพื่อประหยัดเครื่อง
+          const canvas = document.getElementById('fireworks-canvas');
+          if(canvas) canvas.style.display = 'none'; 
       });
 
       // ควบคุมเสียง
@@ -431,11 +456,10 @@
           audio.volume = e.target.value;
       });
 
-      // ระบบพลุ (เหมือนเดิม)
+      // Fireworks Logic
       function startFireworks() {
         const canvas = document.getElementById('fireworks-canvas');
         if(!canvas) return;
-        canvas.style.display = 'block';
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
         window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
@@ -463,12 +487,13 @@
           }
         }
         function animate() {
+          if(canvas.style.display === 'none') return; // หยุดวาดถ้าปิดไปแล้ว
           requestAnimationFrame(animate); ctx.globalAlpha = 0.15; ctx.fillStyle = 'rgba(0, 0, 0, 0.2)'; 
           ctx.fillRect(0, 0, canvas.width, canvas.height);
           particles.forEach((p, i) => { if(p.alpha > 0){ p.update(); p.draw(); } else particles.splice(i, 1); });
         }
         animate();
-        setInterval(() => { if(canvas.style.display !== 'none') createFirework(Math.random() * canvas.width, Math.random() * (canvas.height/2)); }, 800);
+        setInterval(() => { if(overlay.style.display !== 'none') createFirework(Math.random() * canvas.width, Math.random() * (canvas.height/2)); }, 800);
         createFirework(canvas.width/2, canvas.height/3);
       }
     });
