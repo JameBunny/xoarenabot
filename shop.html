@@ -4,46 +4,279 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shop - XO Arena Bot</title>
-    <link rel="stylesheet" href="legal.css">
+    <link rel="stylesheet" href="style.css"> 
     <link rel="icon" href="https://i.imgur.com/qqyb5eF.png">
+
+    <style>
+        /* ====== Theme Variables (เพื่อให้แน่ใจว่าสวยแม้ไม่มีไฟล์ style.css) ====== */
+        :root {
+            --bg-1: #0b0f1a;
+            --bg-2: #0a0d15;
+            --text-1: #ffffff;
+            --text-2: rgba(255, 255, 255, 0.7);
+            --accent: #00d4ff;
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --card-hover: rgba(255, 255, 255, 0.12);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(0, 212, 255, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(255, 0, 153, 0.1) 0%, transparent 40%),
+                linear-gradient(180deg, var(--bg-1), var(--bg-2));
+            background-attachment: fixed;
+            color: var(--text-1);
+            min-height: 100vh;
+        }
+
+        /* ====== Layout ====== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* ====== Header ====== */
+        .shop-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .back-link {
+            text-decoration: none;
+            color: var(--text-2);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s;
+        }
+        .back-link:hover { color: var(--accent); }
+
+        .header-controls { display: flex; gap: 15px; align-items: center; }
+
+        /* ปรับแต่ง Select และปุ่มธีมให้เข้ากับ Glass */
+        select, .theme-button {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-1);
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        /* ====== Shop Hero ====== */
+        .shop-hero {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .shop-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #fff, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .shop-hero p { color: var(--text-2); font-size: 1.1rem; }
+
+        /* ====== Product Grid ====== */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            padding-bottom: 60px;
+        }
+
+        /* ====== Product Card ====== */
+        .product-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(10px);
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            border-color: rgba(255,255,255,0.3);
+            background: var(--card-hover);
+        }
+
+        /* Badge (New / Best Seller) */
+        .badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #ff0055;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            z-index: 2;
+            box-shadow: 0 4px 10px rgba(255, 0, 85, 0.4);
+        }
+        .badge.best-seller { background: #00d4ff; box-shadow: 0 4px 10px rgba(0, 212, 255, 0.4); }
+
+        .product-image-container {
+            width: 100%;
+            padding-top: 100%; /* 1:1 Aspect Ratio */
+            position: relative;
+            background: rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .product-image-container img {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* หรือ contain ถ้าอยากเห็นทั้งรูป */
+            transition: transform 0.5s ease;
+        }
+
+        .product-card:hover .product-image-container img {
+            transform: scale(1.1);
+        }
+
+        .product-info {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-title {
+            font-size: 1.1rem;
+            margin: 0 0 10px 0;
+            line-height: 1.4;
+            color: var(--text-1);
+        }
+
+        .price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+
+        .buy-button {
+            margin-top: auto;
+            display: block;
+            width: 100%;
+            padding: 12px;
+            text-align: center;
+            background: linear-gradient(90deg, #00d4ff, #005bea);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: filter 0.2s, transform 0.2s;
+        }
+        
+        .buy-button:hover {
+            filter: brightness(1.1);
+            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <header class="legal-header">
-            <a href="index.html" class="back-link">← Back to Home</a>
+        <header class="shop-header">
+            <a href="index.html" class="back-link">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5m7-7l-7 7 7 7"></path></svg>
+                Back to Home
+            </a>
             <div class="header-controls">
-                <select id="lang-switcher">
-                    <option value="en">🇺🇸 English</option>
-                    <option value="th">🇹🇭 ไทย</option>
-                    <option value="ja">🇯🇵 日本語</option>
+                <select id="lang-switcher" aria-label="Language">
+                    <option value="en">🇺🇸 EN</option>
+                    <option value="th">🇹🇭 TH</option>
+                    <option value="ja">🇯🇵 JP</option>
                 </select>
                 <button id="theme-toggle" class="theme-button" aria-label="Toggle Theme">
-                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.106a.75.75 0 010 1.06l-1.591 1.59a.75.75 0 11-1.06-1.061l1.59-1.591a.75.75 0 011.062 0zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.836 17.894a.75.75 0 011.06 0l1.591 1.591a.75.75 0 11-1.06 1.06l-1.591-1.59a.75.75 0 010-1.062zM12 21.75a.75.75 0 01-.75-.75v-2.25a.75.75 0 011.5 0V21a.75.75 0 01-.75.75zM5.106 17.894a.75.75 0 010-1.06l1.591-1.591a.75.75 0 111.06 1.06l-1.59 1.591a.75.75 0 01-1.062 0zM3 12a.75.75 0 01.75-.75h2.25a.75.75 0 010 1.5H3.75A.75.75 0 013 12zM6.164 7.164a.75.75 0 01-1.06 0L3.512 5.573a.75.75 0 011.06-1.06l1.591 1.59a.75.75 0 010 1.062z"/></svg>
-                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 004.463-.976.75.75 0 01.818.162l.522.522a.75.75 0 01-.102 1.071A9.353 9.353 0 0118 18a9.372 9.372 0 01-9.372-9.372 9.353 9.353 0 011.07-4.462l.522-.522a.75.75 0 011.072-.102z" clip-rule="evenodd" /></svg>
+                   ☀️/🌙
                 </button>
             </div>
         </header>
+
         <main>
-            <h1 data-lang="shop_title">Shop</h1>
-            <p class="shop-description" data-lang="shop_subtitle">Exclusive items from NosuTeam.</p>
+            <div class="shop-hero">
+                <h1 data-lang="shop_title">Nosu Store</h1>
+                <p data-lang="shop_subtitle">Premium stickers & digital goods for our community.</p>
+            </div>
+
             <div class="product-grid">
+                
                 <div class="product-card">
+                    <span class="badge">New Arrival</span>
                     <div class="product-image-container">
-                        <img src="https://stickershop.line-scdn.net/stickershop/v1/product/30372109/LINEStorePC/main.png" alt="Nosu 1st Anniversary LINE Sticker">
+                        <img src="https://stickershop.line-scdn.net/stickershop/v1/product/31896752/LINEStorePC/main.png" alt="New Nosu Sticker">
                     </div>
                     <div class="product-info">
-                        <h2 class="product-title" data-lang="product1_name">Nosu 1st Anniversary LINE Sticker</h2>
-                        <div class="price" data-lang="product1_price">฿35</div>
+                        <h2 class="product-title" data-lang="product2_name">NosuTeam Sticker Vol. 2</h2>
+                        <div class="price" data-lang="product2_price">฿35</div>
+                        <a href="https://line.me/S/sticker/31896752?_from=lcm" target="_blank" class="buy-button" data-lang="buy_button">Buy Now</a>
                     </div>
-                    <a href="https://store.line.me/stickershop/product/30372109/th" target="_blank" class="buy-button" data-lang="buy_button">Buy Now</a>
                 </div>
+
+                <div class="product-card">
+                    <span class="badge best-seller">Best Seller</span>
+                    <div class="product-image-container">
+                        <img src="https://stickershop.line-scdn.net/stickershop/v1/product/30372109/LINEStorePC/main.png" alt="Nosu 1st Anniversary">
+                    </div>
+                    <div class="product-info">
+                        <h2 class="product-title" data-lang="product1_name">Nosu 1st Anniversary Sticker</h2>
+                        <div class="price" data-lang="product1_price">฿35</div>
+                        <a href="https://store.line.me/stickershop/product/30372109/th" target="_blank" class="buy-button" data-lang="buy_button">Buy Now</a>
+                    </div>
+                </div>
+
             </div>
         </main>
     </div>
 
-    <!-- ✅ ใส่ฟุตเตอร์แบบ include ตรงนี้ (ก่อนปิด body) -->
     <div data-include="footer.html"></div>
 
-    <script src="page_script.js"></script>
+    <script src="script.js"></script> 
+    
+    <script>
+        // Script ย่อยสำหรับหน้านี้ (ถ้าจำเป็น)
+        // จัดการ Theme Toggle เบื้องต้น
+        const themeToggle = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+        
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+        });
+        
+        // Include footer logic (กรณี script.js ยังไม่ทำงาน)
+        (async function includePartials(){
+            const slots = document.querySelectorAll('[data-include]');
+            for (const el of slots){
+                const path = el.getAttribute('data-include');
+                try {
+                    const res = await fetch(path);
+                    if(res.ok) el.innerHTML = await res.text();
+                } catch(e) {}
+            }
+        })();
+    </script>
 </body>
 </html>
