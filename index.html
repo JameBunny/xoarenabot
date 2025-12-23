@@ -90,7 +90,7 @@
     }
 
     /* Spacing */
-    .main-header .container.glass { margin-top: 14px; padding: 10px 16px; position: relative; z-index: 10001; /* อยู่เหนือพลุ */ }
+    .main-header .container.glass { margin-top: 14px; padding: 10px 16px; }
     .hero-section .hero-content.glass { padding: 28px; }
     .slideshow-container.glass { padding: 10px; }
     .feature-card.glass, .command-card.glass { padding: 18px; transition: transform .2s ease, box-shadow .2s ease; }
@@ -104,7 +104,7 @@
     .slides { border-radius: calc(var(--radius-2xl) - 6px); }
     .hero-section { background: transparent !important; padding-top: 110px; }
 
-    /* ====== REFINED COUNTDOWN ====== */
+    /* ====== REFINED COUNTDOWN (จัดระเบียบใหม่: Scroll Text) ====== */
     .countdown-wrapper {
       display: flex;
       flex-direction: column;
@@ -115,43 +115,51 @@
       z-index: 10;
     }
     
-    /* Scroll Text Container */
+    /* กรอบข้อความเลื่อน (Scrolling Container) */
     .scrolling-title-container {
-      width: 260px;
+      width: 260px; /* ความกว้างของกรอบข้อความ */
       height: 36px;
-      overflow: hidden;
+      overflow: hidden; /* ซ่อนส่วนที่เกิน */
       position: relative;
       margin-bottom: 20px;
+      
+      /* ดีไซน์กรอบแก้ว */
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: 100px;
       backdrop-filter: blur(4px);
       box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      
+      /* ไล่เฟดหัวท้ายให้ดูเนียน (Mask) */
       mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
       -webkit-mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
+      
       display: flex;
       align-items: center;
     }
 
+    /* รางวิ่งของข้อความ */
     .scrolling-track {
       display: flex;
-      white-space: nowrap;
-      animation: scrollText 8s linear infinite;
+      white-space: nowrap; /* ห้ามขึ้นบรรทัดใหม่ */
+      animation: scrollText 8s linear infinite; /* ความเร็วในการวิ่ง */
     }
 
+    /* ตัวข้อความข้างใน */
     .scrolling-item {
       font-size: 0.85rem;
       text-transform: uppercase;
       letter-spacing: 3px;
       font-weight: 700;
       color: rgba(255, 255, 255, 0.95);
-      padding-right: 40px;
+      padding-right: 40px; /* ระยะห่างระหว่างข้อความแต่ละชุด */
       display: inline-block;
     }
     
+    /* Keyframes สำหรับการเลื่อน */
     @keyframes scrollText {
       0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
+      100% { transform: translateX(-50%); } /* เลื่อนไปครึ่งหนึ่ง (เพราะเราใส่ข้อความเบิ้ล 2 ชุด) */
     }
 
     .countdown-timer {
@@ -211,52 +219,31 @@
       letter-spacing: 1px;
     }
 
-    /* Animation for New Year */
+    @media (max-width: 600px) {
+      .time-block { width: 70px; height: 80px; }
+      .time-number { font-size: 1.8rem; }
+      .countdown-wrapper { margin-bottom: 30px; }
+      .countdown-timer { gap: 10px; }
+    }
+    
     .new-year-message {
-      display: none; /* ซ่อนไว้ก่อน */
-      font-size: 2.5rem;
+      display: none;
+      font-size: 3rem;
       font-weight: 900;
       text-transform: uppercase;
-      margin-top: 10px;
-      margin-bottom: 15px;
+      margin-top: 20px;
       background: linear-gradient(to right, #C6FFDD, #FBD786, #f7797d);
       background-size: 200% auto;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       animation: shine 3s linear infinite, popIn 0.5s ease-out;
       text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
-      text-align: center;
-      line-height: 1.2;
     }
     @keyframes shine { to { background-position: 200% center; } }
     @keyframes popIn { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 
-    /* ปุ่มปิดพลุ */
-    .stop-btn {
-      display: none; /* ซ่อนไว้ก่อน */
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      color: #fff;
-      padding: 8px 20px;
-      border-radius: 30px;
-      cursor: pointer;
-      font-size: 0.9rem;
-      margin-top: 10px;
-      backdrop-filter: blur(5px);
-      transition: all 0.2s;
-    }
-    .stop-btn:hover {
-      background: rgba(255, 255, 255, 0.2);
-      transform: scale(1.05);
-    }
-
-    /* Canvas for Fireworks */
-    /* z-index สูงแต่ pointer-events: none ทำให้คลิกทะลุได้ */
     #fireworks-canvas {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-      pointer-events: none; 
-      z-index: 10000; 
-      display: none;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; display: none;
     }
   </style>
 </head>
@@ -327,12 +314,8 @@
               <span class="time-label">Secs</span>
             </div>
           </div>
-          
-          <div id="new-year-message" class="new-year-message" data-lang="new_year_msg">HAPPY NEW YEAR 2026!</div>
-          
-          <button id="stop-fireworks" class="stop-btn" data-lang="stop_fireworks">Close Celebration</button>
+          <div id="new-year-message" class="new-year-message">HAPPY NEW YEAR 2026! 🎉</div>
         </div>
-
         <h1 class="reveal on-glass-strong" data-lang="hero_title">The Ultimate Tic-Tac-Toe Experience.</h1>
         <p class="reveal on-glass-soft" data-lang="hero_subtitle">Challenge your friends or our smart AI. Simple, fun, and competitive.</p>
         <div class="cta-buttons reveal">
@@ -435,20 +418,17 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // 🔴🔴 ตั้งค่าเวลา: เปลี่ยน +5000 เป็นวันที่จริงเมื่อทดสอบเสร็จแล้ว 🔴🔴
-      // ตัวอย่างวันจริง: new Date("Jan 1, 2026 00:00:00 GMT+0700").getTime();
-      const targetDate = new Date().getTime() + 5000; 
-
+      // 1. กำหนดวันเป้าหมาย (1 ม.ค. 2026 00:00:00 เวลาไทย)
+      const targetDate = new Date("Jan 1, 2026 00:00:00 GMT+0700").getTime();
+      
       const elDays = document.getElementById('days');
       const elHours = document.getElementById('hours');
       const elMinutes = document.getElementById('minutes');
       const elSeconds = document.getElementById('seconds');
       const display = document.getElementById('countdown-display');
       const message = document.getElementById('new-year-message');
-      const stopBtn = document.getElementById('stop-fireworks');
       
       let fireworksStarted = false;
-      let intervalId = null;
 
       const timer = setInterval(() => {
         const now = new Date().getTime();
@@ -460,22 +440,16 @@
           const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
           const s = Math.floor((distance % (1000 * 60)) / 1000);
 
-          if(elDays) elDays.innerText = d < 10 ? '0' + d : d;
-          if(elHours) elHours.innerText = h < 10 ? '0' + h : h;
-          if(elMinutes) elMinutes.innerText = m < 10 ? '0' + m : m;
-          if(elSeconds) elSeconds.innerText = s < 10 ? '0' + s : s;
+          elDays.innerText = d < 10 ? '0' + d : d;
+          elHours.innerText = h < 10 ? '0' + h : h;
+          elMinutes.innerText = m < 10 ? '0' + m : m;
+          elSeconds.innerText = s < 10 ? '0' + s : s;
         } else {
           clearInterval(timer);
-          
-          // ซ่อนเวลานับถอยหลัง
-          if(display) display.style.display = "none";
-          // ซ่อนแถบข้อความเลื่อน
-          const scrollTitle = document.querySelector('.scrolling-title-container');
-          if(scrollTitle) scrollTitle.style.display = 'none';
-
-          // แสดงข้อความ HNY และปุ่มปิด
-          if(message) message.style.display = "block";
-          if(stopBtn) stopBtn.style.display = "block";
+          display.style.display = "none";
+          // ซ่อนแถบเลื่อนด้วยเมื่อถึงเวลาปีใหม่
+          document.querySelector('.scrolling-title-container').style.display = 'none';
+          message.style.display = "block";
           
           if (!fireworksStarted) {
             startFireworks();
@@ -483,23 +457,6 @@
           }
         }
       }, 1000);
-
-      // ฟังก์ชันปิดพลุเมื่อกดปุ่ม Stop
-      if(stopBtn) {
-        stopBtn.addEventListener('click', () => {
-             // ซ่อน Canvas
-             const canvas = document.getElementById('fireworks-canvas');
-             if(canvas) canvas.style.display = 'none';
-             
-             // ซ่อนปุ่มและข้อความ HNY
-             message.style.display = 'none';
-             stopBtn.style.display = 'none';
-             
-             // แสดง Countdown กลับมา (หรือจะแสดงข้อความอื่นแทนก็ได้)
-             // display.style.display = 'flex'; 
-             // document.querySelector('.scrolling-title-container').style.display = 'flex';
-        });
-      }
 
       function startFireworks() {
         const canvas = document.getElementById('fireworks-canvas');
@@ -519,8 +476,13 @@
 
         class Particle {
           constructor(x, y, color, velocity) {
-            this.x = x; this.y = y; this.color = color; this.velocity = velocity;
-            this.alpha = 1; this.friction = 0.96; this.gravity = 0.04;
+            this.x = x;
+            this.y = y;
+            this.color = color;
+            this.velocity = velocity;
+            this.alpha = 1;
+            this.friction = 0.96;
+            this.gravity = 0.04;
           }
           draw() {
             ctx.globalAlpha = this.alpha;
@@ -572,8 +534,6 @@
         animate();
 
         setInterval(() => {
-           // เช็คว่าถ้าปิด Canvas ไปแล้วก็ไม่ต้องสร้างพลุเพิ่ม
-           if(canvas.style.display === 'none') return;
            const x = Math.random() * canvas.width;
            const y = Math.random() * (canvas.height / 2);
            createFirework(x, y);
