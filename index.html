@@ -82,22 +82,48 @@
       margin-bottom: 40px; position: relative; z-index: 10;
     }
     
-    /* Scrolling Title */
+    /* Scrolling Title Styles */
     .scrolling-title-container {
-      width: 260px; height: 36px; overflow: hidden; position: relative; margin-bottom: 20px;
-      background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 100px; backdrop-filter: blur(4px);
+      width: 260px; 
+      height: 36px; 
+      overflow: hidden; 
+      position: relative; 
+      margin-bottom: 20px;
+      
+      background: rgba(255, 255, 255, 0.05); 
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 100px; 
+      backdrop-filter: blur(4px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      
+      /* Fade หัวท้าย */
       mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
       -webkit-mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
-      display: flex; align-items: center;
+      
+      display: flex; 
+      align-items: center;
     }
-    .scrolling-track { display: flex; white-space: nowrap; animation: scrollText 8s linear infinite; }
+
+    .scrolling-track { 
+      display: flex; 
+      white-space: nowrap; 
+      animation: scrollText 8s linear infinite; 
+    }
+
     .scrolling-item {
-      font-size: 0.85rem; text-transform: uppercase; letter-spacing: 3px; font-weight: 700;
-      color: rgba(255, 255, 255, 0.9);
-      padding-right: 40px; display: inline-block;
+      font-size: 0.85rem; 
+      text-transform: uppercase; 
+      letter-spacing: 3px; 
+      font-weight: 700;
+      color: rgba(31, 41, 55, 0.98);
+      padding-right: 40px; 
+      display: inline-block;
     }
-    @keyframes scrollText { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    
+    @keyframes scrollText { 
+      0% { transform: translateX(0); } 
+      100% { transform: translateX(-50%); } 
+    }
 
     /* Timer Blocks */
     .countdown-timer { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
