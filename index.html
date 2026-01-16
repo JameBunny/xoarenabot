@@ -68,7 +68,7 @@
 
     /* Spacing & Components */
     .main-header .container.glass { margin-top: 14px; padding: 10px 16px; position: relative; z-index: 50; }
-    .hero-section .hero-content.glass { padding: 28px; }
+    .hero-section .hero-content.glass { padding: 48px 28px; /* เพิ่ม padding บนล่างให้สมดุลเมื่อไม่มี countdown */ }
     .feature-card.glass, .command-card.glass { padding: 18px; transition: transform .2s ease, box-shadow .2s ease; }
     .feature-card.glass:hover, .command-card.glass:hover { transform: translateY(-4px); box-shadow: 0 28px 60px rgba(0,0,0,0.42); }
     .footer .container.glass { margin: 18px auto; padding: 14px 18px; background: color-mix(in oklab, var(--glass-bg) 86%, transparent); }
@@ -76,75 +76,6 @@
     .on-glass-soft   { color: var(--text-2); text-shadow: 0 1px 2px rgba(0,0,0,.20); }
     .hero-section { background: transparent !important; padding-top: 110px; }
     
-    /* ====== COUNTDOWN STYLES ====== */
-    .countdown-wrapper {
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      margin-bottom: 40px; position: relative; z-index: 10;
-    }
-    
-    /* Scrolling Title Styles */
-    .scrolling-title-container {
-      width: 260px; 
-      height: 36px; 
-      overflow: hidden; 
-      position: relative; 
-      margin-bottom: 20px;
-      
-      background: rgba(255, 255, 255, 0.05); 
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 100px; 
-      backdrop-filter: blur(4px);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-      
-      /* Fade หัวท้าย */
-      mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
-      -webkit-mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
-      
-      display: flex; 
-      align-items: center;
-    }
-
-    .scrolling-track { 
-      display: flex; 
-      white-space: nowrap; 
-      animation: scrollText 8s linear infinite; 
-    }
-
-    .scrolling-item {
-      font-size: 1.5rem; 
-      text-transform: uppercase; 
-      letter-spacing: 3px; 
-      font-weight: 700;
-      color: rgba(17, 24, 39, 0.98);
-      padding-right: 40px; 
-      display: inline-block;
-    }
-    
-    @keyframes scrollText { 
-      0% { transform: translateX(0); } 
-      100% { transform: translateX(-50%); } 
-    }
-
-    /* Timer Blocks */
-    .countdown-timer { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-    .time-block {
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      background: linear-gradient(145deg, rgba(30, 35, 45, 0.9), rgba(20, 25, 35, 0.95));
-      border: 1px solid rgba(255, 255, 255, 0.1); width: 90px; height: 100px;
-      border-radius: 18px; box-shadow: 0 8px 20px rgba(0,0,0,0.3); position: relative;
-    }
-    .time-block::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.5), transparent);
-    }
-    .time-number {
-      font-size: 2.6rem; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums;
-      background: linear-gradient(180deg, #FFE5B4 0%, #FFD700 40%, #DAA520 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 2px 10px rgba(255, 215, 0, 0.25)); margin-bottom: 5px;
-    }
-    .time-label { font-size: 0.65rem; font-weight: 600; color: rgba(255, 255, 255, 0.5); text-transform: uppercase; }
-
   </style>
 </head>
 <body>
@@ -176,24 +107,6 @@
     <section class="hero-section">
       <div class="container hero-content glass glass-strong">
         
-        <div class="countdown-wrapper reveal">
-          <div class="scrolling-title-container">
-            <div class="scrolling-track">
-              <span class="scrolling-item" id="scroll-text-1">COUNTDOWN TO 2026 ✦ </span>
-              <span class="scrolling-item" id="scroll-text-2">COUNTDOWN TO 2026 ✦ </span>
-              <span class="scrolling-item" id="scroll-text-3">COUNTDOWN TO 2026 ✦ </span>
-              <span class="scrolling-item" id="scroll-text-4">COUNTDOWN TO 2026 ✦ </span>
-            </div>
-          </div>
-          
-          <div id="countdown-display" class="countdown-timer">
-            <div class="time-block"><span class="time-number" id="days">00</span><span class="time-label">Days</span></div>
-            <div class="time-block"><span class="time-number" id="hours">00</span><span class="time-label">Hrs</span></div>
-            <div class="time-block"><span class="time-number" id="minutes">00</span><span class="time-label">Mins</span></div>
-            <div class="time-block"><span class="time-number" id="seconds">00</span><span class="time-label">Secs</span></div>
-          </div>
-        </div>
-
         <h1 class="reveal on-glass-strong" data-lang="hero_title">The Ultimate Tic-Tac-Toe Experience.</h1>
         <p class="reveal on-glass-soft" data-lang="hero_subtitle">Challenge your friends or our smart AI. Simple, fun, and competitive.</p>
         <div class="cta-buttons reveal">
@@ -261,44 +174,5 @@
     })();
   </script>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const targetDate = new Date("Jan 1, 2026 00:00:00 GMT+0700").getTime();
-
-      const elDays = document.getElementById('days');
-      const elHours = document.getElementById('hours');
-      const elMinutes = document.getElementById('minutes');
-      const elSeconds = document.getElementById('seconds');
-      
-      const timer = setInterval(() => {
-        const now = new Date().getTime();
-        const distance = targetDate - now;
-
-        if (distance > 0) {
-          const d = Math.floor(distance / (1000 * 60 * 60 * 24));
-          const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-          const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-          const s = Math.floor((distance % (1000 * 60)) / 1000);
-
-          if(elDays) elDays.innerText = d < 10 ? '0' + d : d;
-          if(elHours) elHours.innerText = h < 10 ? '0' + h : h;
-          if(elMinutes) elMinutes.innerText = m < 10 ? '0' + m : m;
-          if(elSeconds) elSeconds.innerText = s < 10 ? '0' + s : s;
-        } else {
-          clearInterval(timer);
-          
-          // หยุดที่ 00
-          if(elDays) elDays.innerText = "00"; 
-          if(elHours) elHours.innerText = "00";
-          if(elMinutes) elMinutes.innerText = "00"; 
-          if(elSeconds) elSeconds.innerText = "00";
-
-          // เปลี่ยนข้อความวิ่งเป็น WELCOME 2026 (ไม่มี Overlay)
-          const scrollItems = document.querySelectorAll('.scrolling-item');
-          scrollItems.forEach(item => item.innerText = "WELCOME 2026 ✦ ");
-        }
-      }, 1000);
-    });
-  </script>
-</body>
+  </body>
 </html>
