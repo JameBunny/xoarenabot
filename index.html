@@ -1,4 +1,4 @@
-<! DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
@@ -47,34 +47,81 @@
       margin:  0; overflow-x: hidden;
     }
 
-    /* Glass Effect */
+    /* ====== Liquid Glass Effect (iOS 26 Style) ====== */
     .glass{
-      position: relative; background: var(--glass-bg);
-      border-radius: var(--radius-2xl); box-shadow: var(--glass-shadow);
-      color: var(--text-1); backdrop-filter: blur(var(--blur)) saturate(var(--sat));
+      position: relative;
+      background:  var(--glass-bg);
+      border-radius: var(--radius-2xl);
+      box-shadow: var(--glass-shadow);
+      color: var(--text-1);
+      backdrop-filter: blur(var(--blur)) saturate(var(--sat));
       -webkit-backdrop-filter: blur(var(--blur)) saturate(var(--sat));
       border: 1px solid transparent;
       background-image: linear-gradient(var(--glass-bg), var(--glass-bg)), linear-gradient(145deg, var(--glass-border-1), var(--glass-border-2));
-      background-origin: border-box; background-clip: padding-box, border-box;
+      background-origin: border-box;
+      background-clip: padding-box, border-box;
     }
+    
     .glass-strong{
       background:  color-mix(in oklab, var(--glass-bg) 95%, rgba(0,0,0,0.18));
       border: 1px solid color-mix(in oklab, var(--glass-border-1) 70%, #000 30%);
     }
+    
+    /* Top highlight reflection - สำคัญสำหรับ Liquid Glass */
     .glass:: before{
-      content:""; position: absolute; inset:0; border-radius:  inherit;
-      background: var(--top-highlight); pointer-events: none; mix-blend-mode:  screen;
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background:  var(--top-highlight);
+      pointer-events: none;
+      mix-blend-mode:  screen;
     }
 
-    /* Spacing & Components */
-    .main-header . container. glass { margin-top: 14px; padding:  10px 16px; position: relative; z-index: 50; }
-    . hero-section . hero-content. glass { padding: 28px; }
-    .feature-card. glass, .command-card.glass { padding: 18px; transition: transform . 2s ease, box-shadow .2s ease; }
-    .feature-card.glass:hover, .command-card. glass:hover { transform: translateY(-4px); box-shadow: 0 28px 60px rgba(0,0,0,0.42); }
-    .footer . container.glass { margin:  18px auto; padding: 14px 18px; background: color-mix(in oklab, var(--glass-bg) 86%, transparent); }
-    .on-glass-strong { color: var(--text-1); text-shadow: 0 1px 2px rgba(0,0,0,. 35); }
-    .on-glass-soft   { color: var(--text-2); text-shadow: 0 1px 2px rgba(0,0,0,. 20); }
-    .hero-section { background: transparent ! important; padding-top: 110px; }
+    /* ====== Spacing & Components ====== */
+    .main-header . container. glass {
+      margin-top: 14px;
+      padding:  10px 16px;
+      position: relative;
+      z-index: 50;
+    }
+    
+    .hero-section . hero-content. glass {
+      padding: 28px;
+    }
+    
+    .feature-card. glass,
+    .command-card.glass {
+      padding: 18px;
+      transition: transform . 2s ease, box-shadow .2s ease;
+    }
+    
+    .feature-card.glass:hover,
+    . command-card.glass:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 28px 60px rgba(0,0,0,0.42);
+    }
+    
+    .footer . container.glass {
+      margin:  18px auto;
+      padding:  14px 18px;
+      background: color-mix(in oklab, var(--glass-bg) 86%, transparent);
+    }
+    
+    . on-glass-strong {
+      color: var(--text-1);
+      text-shadow: 0 1px 2px rgba(0,0,0,. 35);
+    }
+    
+    . on-glass-soft {
+      color:  var(--text-2);
+      text-shadow: 0 1px 2px rgba(0,0,0,.20);
+    }
+    
+    . hero-section {
+      background: transparent ! important;
+      padding-top: 110px;
+    }
   </style>
 </head>
 <body>
@@ -89,13 +136,13 @@
         <a href="#features" data-lang="nav_features">Features</a>
         <a href="shop.html" target="_blank" rel="noopener" data-lang="nav_shop">Shop</a>
         <a href="#commands" data-lang="nav_commands">Commands</a>
-        <a href="https://discord.gg/nX2AdShqhn" target="_blank" rel="noopener" data-lang="nav_support">Support</a>
+        <a href="https://discord. gg/nX2AdShqhn" target="_blank" rel="noopener" data-lang="nav_support">Support</a>
       </div>
       <div class="nav-right">
         <select id="lang-switcher"><option value="en">🇺🇸 EN</option><option value="th">🇹🇭 TH</option><option value="ja">🇯🇵 JP</option></select>
         <button id="theme-toggle" class="theme-button">
-          <svg class="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18. 894 6.106a. 75.75 0 010 1.06l-1.591 1.59a.75.75 0 11-1.06-1.061l1.59-1.591a.75.75 0 011.062 0zM21. 75 12a. 75.75 0 01-. 75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01. 75.75zM17.836 17.894a.75.75 0 011.06 0l1.591 1.591a.75.75 0 11-1.06 1.06l-1.591-1.59a.75.75 0 010-1.062zM12 21.75a.75.75 0 01-.75-.75v-2.25a.75.75 0 011.5 0V21a.75.75 0 01-. 75.75zM5.106 17.894a.75.75 0 010-1.06l1.591-1.591a.75.75 0 111.06 1.06l-1.59 1.591a.75.75 0 01-1.062 0zM3 12a.75.75 0 01.75-. 75h2.25a.75.75 0 010 1.5H3.75A.75.75 0 013 12zM6.164 7.164a.75.75 0 01-1.06 0L3.512 5.573a.75.75 0 011.06-1.06l1.591 1.59a.75.75 0 010 1.062z"/></svg>
-          <svg class="moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M9. 528 1.718a.75.75 0 01.162. 819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 004.463-. 976. 75.75 0 01.818. 162l.522.522a.75.75 0 01-. 102 1.071A9.353 9.353 0 0118 18a9.372 9.372 0 01-9.372-9.372 9.353 9.353 0 011.07-4.462l.522-.522a.75.75 0 011.072-. 102z" clip-rule="evenodd" /></svg>
+          <svg class="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2. 25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4. 5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18. 894 6.106a. 75.75 0 010 1.06l-1.591 1.59a.75.75 0 11-1.06-1.061l1.59-1.591a.75.75 0 011.062 0zM21. 75 12a. 75.75 0 01-. 75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.836 17.894a.75.75 0 011.06 0l1.591 1.591a.75.75 0 11-1.06 1.06l-1.591-1.59a.75.75 0 010-1.062zM12 21.75a.75.75 0 01-.75-. 75v-2.25a.75.75 0 011.5 0V21a.75.75 0 01-. 75.75zM5.106 17.894a.75.75 0 010-1.06l1.591-1.591a.75.75 0 111.06 1.06l-1.59 1.591a.75.75 0 01-1.062 0zM3 12a.75.75 0 01.75-. 75h2.25a.75.75 0 010 1.5H3. 75A. 75.75 0 013 12zM6.164 7.164a.75.75 0 01-1.06 0L3.512 5.573a.75.75 0 011.06-1.06l1.591 1.59a.75.75 0 010 1.062z"/></svg>
+          <svg class="moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M9. 528 1.718a. 75.75 0 01.162. 819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 004.463-. 976. 75.75 0 01.818.162l.522.522a.75.75 0 01-. 102 1.071A9.353 9.353 0 0118 18a9.372 9.372 0 01-9.372-9.372 9.353 9.353 0 011.07-4.462l.522-.522a.75.75 0 011.072-. 102z" clip-rule="evenodd" /></svg>
         </button>
         <button id="hamburger-button" class="hamburger-menu"><svg class="icon-open" width="24" height="24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
       </div>
@@ -109,7 +156,7 @@
         <h1 class="reveal on-glass-strong" data-lang="hero_title">The Ultimate Tic-Tac-Toe Experience. </h1>
         <p class="reveal on-glass-soft" data-lang="hero_subtitle">Challenge your friends or our smart AI.  Simple, fun, and competitive.</p>
         <div class="cta-buttons reveal">
-          <a href="https://discord.com/oauth2/authorize?client_id=1350821486973288468&permissions=8&integration_type=0&scope=bot+applications. commands" class="btn btn-primary" data-lang="hero_cta_add">Add to Discord</a>
+          <a href="https://discord.com/oauth2/authorize?client_id=1350821486973288468&permissions=8&integration_type=0&scope=bot+applications.commands" class="btn btn-primary" data-lang="hero_cta_add">Add to Discord</a>
           <a href="https://top.gg/bot/1350821486973288468/vote" target="_blank" rel="noopener" class="btn btn-secondary" data-lang="hero_cta_vote">Vote for Bot</a>
         </div>
         <div class="slideshow-container reveal glass">
@@ -132,7 +179,7 @@
         <div class="features-grid">
           <article class="feature-card reveal glass">
             <h3 class="on-glass-strong" data-lang="feature_1_title">Play with Friends or Bot</h3>
-            <p class="on-glass-soft" data-lang="feature_1_desc">Challenge a friend for a classic match or test your skills against our smart AI.</p>
+            <p class="on-glass-soft" data-lang="feature_1_desc">Challenge a friend for a classic match or test your skills against our smart AI. </p>
           </article>
           <article class="feature-card reveal glass">
             <h3 class="on-glass-strong" data-lang="feature_2_title">Leaderboards & Stats</h3>
@@ -150,12 +197,12 @@
       <div class="container">
         <h2 class="section-title reveal on-glass-strong" data-lang="commands_title">All Commands</h2>
         <div class="commands-grid">
-          <div class="command-card reveal glass"><h3 class="on-glass-strong">/play <span>@opponent</span></h3><p class="on-glass-soft" data-lang="cmd_play">Starts a game with another player. </p></div>
+          <div class="command-card reveal glass"><h3 class="on-glass-strong">/play <span>@opponent</span></h3><p class="on-glass-soft" data-lang="cmd_play">Starts a game with another player.</p></div>
           <div class="command-card reveal glass"><h3 class="on-glass-strong">/playbot</h3><p class="on-glass-soft" data-lang="cmd_playbot">Starts a game against the AI bot.</p></div>
           <div class="command-card reveal glass"><h3 class="on-glass-strong">/stop</h3><p class="on-glass-soft" data-lang="cmd_stop">Stops the current game.</p></div>
           <div class="command-card reveal glass"><h3 class="on-glass-strong">/leaderboard</h3><p class="on-glass-soft" data-lang="cmd_leaderboard">Shows the server's top players.</p></div>
-          <div class="command-card reveal glass"><h3 class="on-glass-strong">/stats <span>[user]</span></h3><p class="on-glass-soft" data-lang="cmd_stats">View your or another player's stats. </p></div>
-          <div class="command-card reveal glass"><h3 class="on-glass-strong">/setlanguage <span>[th/en/jp]</span></h3><p class="on-glass-soft" data-lang="cmd_setlanguage">Changes the bot's language.</p></div>
+          <div class="command-card reveal glass"><h3 class="on-glass-strong">/stats <span>[user]</span></h3><p class="on-glass-soft" data-lang="cmd_stats">View your or another player's stats.</p></div>
+          <div class="command-card reveal glass"><h3 class="on-glass-strong">/setlanguage <span>[th/en/jp]</span></h3><p class="on-glass-soft" data-lang="cmd_setlanguage">Changes the bot's language. </p></div>
         </div>
       </div>
     </section>
