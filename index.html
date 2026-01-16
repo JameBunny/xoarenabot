@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+<! DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>XO Arena Bot - A New Era of Tic-Tac-Toe</title>
-  <meta name="description" content="Experience Tic-Tac-Toe on Discord like never before. Clean design, powerful features, and seamless gameplay with XO Arena Bot.">
+  <meta name="description" content="Experience Tic-Tac-Toe on Discord like never before.  Clean design, powerful features, and seamless gameplay with XO Arena Bot. ">
 
   <meta name="theme-color" content="#0b0f1a">
 
@@ -13,14 +13,14 @@
 
   <style>
     /* ====== Tokens & Basic Styles ====== */
-    :root{
+    : root{
       --bg-1: #0b0f1a; --bg-2: #0a0d15;
       --text-1: rgba(255,255,255,0.96); --text-2: rgba(255,255,255,0.80);
       --link-1: #d6e4ff;
       --glass-bg: rgba(255,255,255,0.12);
       --glass-border-1: rgba(255,255,255,0.50); --glass-border-2: rgba(255,255,255,0.06);
       --glass-shadow: 0 22px 55px rgba(0,0,0,0.40), 0 1px 0 rgba(255,255,255,0.06) inset;
-      --radius-2xl: 22px; --blur: 22px; --sat: 170%;
+      --radius-2xl: 22px; --blur:  22px; --sat:  170%;
       --top-highlight: linear-gradient(180deg, rgba(255,255,255,0.28), rgba(255,255,255,0) 42%);
     }
     [data-theme="light"]{
@@ -30,13 +30,13 @@
       --glass-bg: rgba(255,255,255,0.58);
       --glass-border-1: rgba(255,255,255,0.88); --glass-border-2: rgba(10,10,20,0.10);
       --glass-shadow: 0 18px 40px rgba(13,26,49,0.18), 0 1px 0 rgba(255,255,255,0.40) inset;
-      --blur: 20px; --sat: 140%;
+      --blur: 20px; --sat:  140%;
       --top-highlight: linear-gradient(180deg, rgba(255,255,255,0.65), rgba(255,255,255,0) 42%);
     }
 
     body{
-      min-height:100dvh;
-      background:
+      min-height: 100dvh;
+      background: 
         radial-gradient(1200px 1200px at 20% -10%, rgba(120,119,198,0.25), transparent 50%),
         radial-gradient(900px 900px at 90% 20%, rgba(0,212,255,0.20), transparent 50%),
         radial-gradient(700px 700px at 30% 100%, rgba(255,0,153,0.15), transparent 55%),
@@ -44,7 +44,7 @@
       background-attachment: fixed;
       color: var(--text-1);
       -webkit-font-smoothing: antialiased;
-      margin: 0; overflow-x: hidden;
+      margin:  0; overflow-x: hidden;
     }
 
     /* Glass Effect */
@@ -58,217 +58,27 @@
       background-origin: border-box; background-clip: padding-box, border-box;
     }
     .glass-strong{
-      background: color-mix(in oklab, var(--glass-bg) 95%, rgba(0,0,0,0.18));
+      background:  color-mix(in oklab, var(--glass-bg) 95%, rgba(0,0,0,0.18));
       border: 1px solid color-mix(in oklab, var(--glass-border-1) 70%, #000 30%);
     }
-    .glass::before{
-      content:""; position:absolute; inset:0; border-radius: inherit;
-      background: var(--top-highlight); pointer-events: none; mix-blend-mode: screen;
+    .glass:: before{
+      content:""; position: absolute; inset:0; border-radius:  inherit;
+      background: var(--top-highlight); pointer-events: none; mix-blend-mode:  screen;
     }
 
     /* Spacing & Components */
-    .main-header .container.glass { margin-top: 14px; padding: 10px 16px; position: relative; z-index: 50; }
-    .hero-section .hero-content.glass { padding: 28px; }
-    .feature-card.glass, .command-card.glass { padding: 18px; transition: transform .2s ease, box-shadow .2s ease; }
-    .feature-card.glass:hover, .command-card.glass:hover { transform: translateY(-4px); box-shadow: 0 28px 60px rgba(0,0,0,0.42); }
-    .footer .container.glass { margin: 18px auto; padding: 14px 18px; background: color-mix(in oklab, var(--glass-bg) 86%, transparent); }
-    .on-glass-strong { color: var(--text-1); text-shadow: 0 1px 2px rgba(0,0,0,.35); }
-    .on-glass-soft   { color: var(--text-2); text-shadow: 0 1px 2px rgba(0,0,0,.20); }
-    .hero-section { background: transparent !important; padding-top: 110px; }
-    
-    /* ====== COUNTDOWN STYLES ====== */
-    .countdown-wrapper {
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      margin-bottom: 40px; position: relative; z-index: 10;
-    }
-    
-    /* Scrolling Title Styles */
-    .scrolling-title-container {
-      width: 260px; 
-      height: 36px; 
-      overflow: hidden; 
-      position: relative; 
-      margin-bottom: 20px;
-      
-      background: rgba(255, 255, 255, 0.05); 
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 100px; 
-      backdrop-filter: blur(4px);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-      
-      /* Fade หัวท้าย */
-      mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
-      -webkit-mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
-      
-      display: flex; 
-      align-items: center;
-    }
-
-    .scrolling-track { 
-      display: flex; 
-      white-space: nowrap; 
-      animation: scrollText 8s linear infinite; 
-    }
-
-    .scrolling-item {
-      font-size: 1.5rem; 
-      text-transform: uppercase; 
-      letter-spacing: 3px; 
-      font-weight: 700;
-      color: rgba(17, 24, 39, 0.98);
-      padding-right: 40px; 
-      display: inline-block;
-    }
-    
-    @keyframes scrollText { 
-      0% { transform: translateX(0); } 
-      100% { transform: translateX(-50%); } 
-    }
-
-    /* Timer Blocks */
-    .countdown-timer { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-    .time-block {
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      background: linear-gradient(145deg, rgba(30, 35, 45, 0.9), rgba(20, 25, 35, 0.95));
-      border: 1px solid rgba(255, 255, 255, 0.1); width: 90px; height: 100px;
-      border-radius: 18px; box-shadow: 0 8px 20px rgba(0,0,0,0.3); position: relative;
-    }
-    .time-block::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.5), transparent);
-    }
-    .time-number {
-      font-size: 2.6rem; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums;
-      background: linear-gradient(180deg, #FFE5B4 0%, #FFD700 40%, #DAA520 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 2px 10px rgba(255, 215, 0, 0.25)); margin-bottom: 5px;
-    }
-    .time-label { font-size: 0.65rem; font-weight: 600; color: rgba(255, 255, 255, 0.5); text-transform: uppercase; }
-
-    /* ====== CELEBRATION OVERLAY (FULL SCREEN) ====== */
-    .celebration-overlay {
-      display: none; /* ซ่อนตอนแรก */
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      z-index: 99999; /* สูงที่สุด */
-      background: radial-gradient(circle at center, rgba(10, 15, 30, 0.8), #000);
-      backdrop-filter: blur(5px);
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-    }
-
-    /* กล่องข้อความกลางจอ */
-    .celebration-content {
-      text-align: center;
-      position: relative;
-      z-index: 2;
-      width: 100%;
-      max-width: 900px;
-      padding: 20px;
-    }
-
-    /* ข้อความ Happy New Year */
-    .hny-title {
-      font-size: 4rem; 
-      font-weight: 900; 
-      margin-bottom: 10px;
-      background: linear-gradient(to bottom, #fff, #b9eaff, #fff);
-      -webkit-background-clip: text; 
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 20px rgba(0, 212, 255, 0.8), 0 0 40px rgba(0, 212, 255, 0.4);
-      animation: float 3s ease-in-out infinite;
-      line-height: 1.1;
-      transition: opacity 0.8s ease;
-    }
-
-    .hny-subtitle {
-      font-size: 1.5rem; 
-      color: #fff; 
-      font-weight: 300;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.8);
-      margin-top: 15px;
-      letter-spacing: 1px;
-      transition: opacity 0.8s ease;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
-
-    /* Control Bar (Music & Close) */
-    .control-bar {
-      position: absolute;
-      top: 30px;
-      right: 30px;
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 10px 20px;
-      border-radius: 50px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(10px);
-      z-index: 10;
-    }
-
-    .music-btn {
-      background: none; border: none; color: #fff; font-size: 1.2rem; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .music-btn:hover { transform: scale(1.1); color: var(--link-1); }
-
-    .volume-slider {
-      -webkit-appearance: none; width: 80px; height: 4px; background: rgba(255, 255, 255, 0.3); border-radius: 5px;
-    }
-    .volume-slider::-webkit-slider-thumb {
-      -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: #fff; cursor: pointer;
-    }
-
-    .close-celebration {
-      background: rgba(255, 50, 50, 0.8); border: none; color: #fff;
-      width: 30px; height: 30px; border-radius: 50%;
-      font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center;
-      transition: all 0.2s; margin-left: 10px;
-    }
-    .close-celebration:hover { background: #ff0000; transform: rotate(90deg); }
-
-    /* Canvas (Fireworks) */
-    #fireworks-canvas {
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;
-    }
-    
-    /* Responsive */
-    @media (max-width: 600px) {
-      .hny-title { font-size: 2.5rem; }
-      .hny-subtitle { font-size: 1rem; }
-      .control-bar { top: 15px; right: 15px; padding: 8px 15px; }
-      .volume-slider { width: 60px; }
-    }
+    .main-header . container. glass { margin-top: 14px; padding:  10px 16px; position: relative; z-index: 50; }
+    . hero-section . hero-content. glass { padding: 28px; }
+    .feature-card. glass, .command-card.glass { padding: 18px; transition: transform . 2s ease, box-shadow .2s ease; }
+    .feature-card.glass:hover, .command-card. glass:hover { transform: translateY(-4px); box-shadow: 0 28px 60px rgba(0,0,0,0.42); }
+    .footer . container.glass { margin:  18px auto; padding: 14px 18px; background: color-mix(in oklab, var(--glass-bg) 86%, transparent); }
+    .on-glass-strong { color: var(--text-1); text-shadow: 0 1px 2px rgba(0,0,0,. 35); }
+    .on-glass-soft   { color: var(--text-2); text-shadow: 0 1px 2px rgba(0,0,0,. 20); }
+    .hero-section { background: transparent ! important; padding-top: 110px; }
   </style>
 </head>
 <body>
 
-  <div id="celebration-overlay" class="celebration-overlay">
-    <canvas id="fireworks-canvas"></canvas>
-
-    <div class="control-bar">
-      <button id="music-toggle" class="music-btn" title="Mute/Unmute">🔊</button>
-      <input type="range" id="volume-slider" class="volume-slider" min="0" max="1" step="0.1" value="0.5">
-      <button id="stop-celebration" class="close-celebration" title="Close">✕</button>
-    </div>
-
-    <div class="celebration-content">
-      <div id="hny-text" class="hny-title">HAPPY NEW YEAR 2026!</div>
-      <div id="thank-text" class="hny-subtitle">Wishing you warmth and happiness.</div>
-    </div>
-    
-    <audio id="hny-music" loop>
-      <source src="song.mp3" type="audio/mpeg">
-    </audio>
-  </div>
   <header class="main-header">
     <nav class="container glass" role="navigation" aria-label="Main">
       <a href="index.html" class="logo-link">
@@ -284,8 +94,8 @@
       <div class="nav-right">
         <select id="lang-switcher"><option value="en">🇺🇸 EN</option><option value="th">🇹🇭 TH</option><option value="ja">🇯🇵 JP</option></select>
         <button id="theme-toggle" class="theme-button">
-          <svg class="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.106a.75.75 0 010 1.06l-1.591 1.59a.75.75 0 11-1.06-1.061l1.59-1.591a.75.75 0 011.062 0zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.836 17.894a.75.75 0 011.06 0l1.591 1.591a.75.75 0 11-1.06 1.06l-1.591-1.59a.75.75 0 010-1.062zM12 21.75a.75.75 0 01-.75-.75v-2.25a.75.75 0 011.5 0V21a.75.75 0 01-.75.75zM5.106 17.894a.75.75 0 010-1.06l1.591-1.591a.75.75 0 111.06 1.06l-1.59 1.591a.75.75 0 01-1.062 0zM3 12a.75.75 0 01.75-.75h2.25a.75.75 0 010 1.5H3.75A.75.75 0 013 12zM6.164 7.164a.75.75 0 01-1.06 0L3.512 5.573a.75.75 0 011.06-1.06l1.591 1.59a.75.75 0 010 1.062z"/></svg>
-          <svg class="moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 004.463-.976.75.75 0 01.818.162l.522.522a.75.75 0 01-.102 1.071A9.353 9.353 0 0118 18a9.372 9.372 0 01-9.372-9.372 9.353 9.353 0 011.07-4.462l.522-.522a.75.75 0 011.072-.102z" clip-rule="evenodd" /></svg>
+          <svg class="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18. 894 6.106a. 75.75 0 010 1.06l-1.591 1.59a.75.75 0 11-1.06-1.061l1.59-1.591a.75.75 0 011.062 0zM21. 75 12a. 75.75 0 01-. 75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01. 75.75zM17.836 17.894a.75.75 0 011.06 0l1.591 1.591a.75.75 0 11-1.06 1.06l-1.591-1.59a.75.75 0 010-1.062zM12 21.75a.75.75 0 01-.75-.75v-2.25a.75.75 0 011.5 0V21a.75.75 0 01-. 75.75zM5.106 17.894a.75.75 0 010-1.06l1.591-1.591a.75.75 0 111.06 1.06l-1.59 1.591a.75.75 0 01-1.062 0zM3 12a.75.75 0 01.75-. 75h2.25a.75.75 0 010 1.5H3.75A.75.75 0 013 12zM6.164 7.164a.75.75 0 01-1.06 0L3.512 5.573a.75.75 0 011.06-1.06l1.591 1.59a.75.75 0 010 1.062z"/></svg>
+          <svg class="moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M9. 528 1.718a.75.75 0 01.162. 819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 004.463-. 976. 75.75 0 01.818. 162l.522.522a.75.75 0 01-. 102 1.071A9.353 9.353 0 0118 18a9.372 9.372 0 01-9.372-9.372 9.353 9.353 0 011.07-4.462l.522-.522a.75.75 0 011.072-. 102z" clip-rule="evenodd" /></svg>
         </button>
         <button id="hamburger-button" class="hamburger-menu"><svg class="icon-open" width="24" height="24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
       </div>
@@ -295,29 +105,11 @@
   <main>
     <section class="hero-section">
       <div class="container hero-content glass glass-strong">
-        
-        <div class="countdown-wrapper reveal">
-          <div class="scrolling-title-container">
-            <div class="scrolling-track">
-              <span class="scrolling-item" id="scroll-text-1">COUNTDOWN TO 2026 ✦ </span>
-              <span class="scrolling-item" id="scroll-text-2">COUNTDOWN TO 2026 ✦ </span>
-              <span class="scrolling-item" id="scroll-text-3">COUNTDOWN TO 2026 ✦ </span>
-              <span class="scrolling-item" id="scroll-text-4">COUNTDOWN TO 2026 ✦ </span>
-            </div>
-          </div>
-          
-          <div id="countdown-display" class="countdown-timer">
-            <div class="time-block"><span class="time-number" id="days">00</span><span class="time-label">Days</span></div>
-            <div class="time-block"><span class="time-number" id="hours">00</span><span class="time-label">Hrs</span></div>
-            <div class="time-block"><span class="time-number" id="minutes">00</span><span class="time-label">Mins</span></div>
-            <div class="time-block"><span class="time-number" id="seconds">00</span><span class="time-label">Secs</span></div>
-          </div>
-        </div>
 
-        <h1 class="reveal on-glass-strong" data-lang="hero_title">The Ultimate Tic-Tac-Toe Experience.</h1>
-        <p class="reveal on-glass-soft" data-lang="hero_subtitle">Challenge your friends or our smart AI. Simple, fun, and competitive.</p>
+        <h1 class="reveal on-glass-strong" data-lang="hero_title">The Ultimate Tic-Tac-Toe Experience. </h1>
+        <p class="reveal on-glass-soft" data-lang="hero_subtitle">Challenge your friends or our smart AI.  Simple, fun, and competitive.</p>
         <div class="cta-buttons reveal">
-          <a href="https://discord.com/oauth2/authorize?client_id=1350821486973288468&permissions=8&integration_type=0&scope=bot+applications.commands" class="btn btn-primary" data-lang="hero_cta_add">Add to Discord</a>
+          <a href="https://discord.com/oauth2/authorize?client_id=1350821486973288468&permissions=8&integration_type=0&scope=bot+applications. commands" class="btn btn-primary" data-lang="hero_cta_add">Add to Discord</a>
           <a href="https://top.gg/bot/1350821486973288468/vote" target="_blank" rel="noopener" class="btn btn-secondary" data-lang="hero_cta_vote">Vote for Bot</a>
         </div>
         <div class="slideshow-container reveal glass">
@@ -344,7 +136,7 @@
           </article>
           <article class="feature-card reveal glass">
             <h3 class="on-glass-strong" data-lang="feature_2_title">Leaderboards & Stats</h3>
-            <p class="on-glass-soft" data-lang="feature_2_desc">Track your wins, losses, and draws. Climb the leaderboard to become the champion.</p>
+            <p class="on-glass-soft" data-lang="feature_2_desc">Track your wins, losses, and draws.  Climb the leaderboard to become the champion. </p>
           </article>
           <article class="feature-card reveal glass">
             <h3 class="on-glass-strong" data-lang="feature_3_title">Multi-Language Support</h3>
@@ -358,11 +150,11 @@
       <div class="container">
         <h2 class="section-title reveal on-glass-strong" data-lang="commands_title">All Commands</h2>
         <div class="commands-grid">
-          <div class="command-card reveal glass"><h3 class="on-glass-strong">/play <span>@opponent</span></h3><p class="on-glass-soft" data-lang="cmd_play">Starts a game with another player.</p></div>
+          <div class="command-card reveal glass"><h3 class="on-glass-strong">/play <span>@opponent</span></h3><p class="on-glass-soft" data-lang="cmd_play">Starts a game with another player. </p></div>
           <div class="command-card reveal glass"><h3 class="on-glass-strong">/playbot</h3><p class="on-glass-soft" data-lang="cmd_playbot">Starts a game against the AI bot.</p></div>
           <div class="command-card reveal glass"><h3 class="on-glass-strong">/stop</h3><p class="on-glass-soft" data-lang="cmd_stop">Stops the current game.</p></div>
           <div class="command-card reveal glass"><h3 class="on-glass-strong">/leaderboard</h3><p class="on-glass-soft" data-lang="cmd_leaderboard">Shows the server's top players.</p></div>
-          <div class="command-card reveal glass"><h3 class="on-glass-strong">/stats <span>[user]</span></h3><p class="on-glass-soft" data-lang="cmd_stats">View your or another player's stats.</p></div>
+          <div class="command-card reveal glass"><h3 class="on-glass-strong">/stats <span>[user]</span></h3><p class="on-glass-soft" data-lang="cmd_stats">View your or another player's stats. </p></div>
           <div class="command-card reveal glass"><h3 class="on-glass-strong">/setlanguage <span>[th/en/jp]</span></h3><p class="on-glass-soft" data-lang="cmd_setlanguage">Changes the bot's language.</p></div>
         </div>
       </div>
@@ -381,148 +173,5 @@
     })();
   </script>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // 🔴🔴 ตั้งค่าเวลา: เปลี่ยน +5000 เป็นวันที่จริง 🔴🔴
-      // const targetDate = new Date("Jan 1, 2026 00:00:00 GMT+0700").getTime();
-      const targetDate = new Date("Jan 1, 2026 00:00:00 GMT+0700").getTime();
-
-      const elDays = document.getElementById('days');
-      const elHours = document.getElementById('hours');
-      const elMinutes = document.getElementById('minutes');
-      const elSeconds = document.getElementById('seconds');
-      
-      const overlay = document.getElementById('celebration-overlay');
-      const hnyText = document.getElementById('hny-text');
-      const thankText = document.getElementById('thank-text');
-      const stopBtn = document.getElementById('stop-celebration');
-      const audio = document.getElementById('hny-music');
-      const musicToggle = document.getElementById('music-toggle');
-      const volumeSlider = document.getElementById('volume-slider');
-      
-      let fireworksStarted = false;
-      let rotateInterval = null;
-
-      // ข้อความ 3 ภาษา
-      const messages = [
-        { hny: "HAPPY NEW YEAR 2026!", sub: "Wishing you warmth and happiness." },
-        { hny: "สวัสดีปีใหม่ 2569!", sub: "ขอให้มีความสุขและสุขภาพแข็งแรง" },
-        { hny: "あけましておめでとう 2026!", sub: "今年もよろしくお願いいたします" }
-      ];
-      let msgIndex = 0;
-
-      const timer = setInterval(() => {
-        const now = new Date().getTime();
-        const distance = targetDate - now;
-
-        if (distance > 0) {
-          const d = Math.floor(distance / (1000 * 60 * 60 * 24));
-          const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-          const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-          const s = Math.floor((distance % (1000 * 60)) / 1000);
-
-          if(elDays) elDays.innerText = d < 10 ? '0' + d : d;
-          if(elHours) elHours.innerText = h < 10 ? '0' + h : h;
-          if(elMinutes) elMinutes.innerText = m < 10 ? '0' + m : m;
-          if(elSeconds) elSeconds.innerText = s < 10 ? '0' + s : s;
-        } else {
-          clearInterval(timer);
-          
-          // 1. ตั้งเลขเป็น 00 ตลอดไป
-          elDays.innerText = "00"; elHours.innerText = "00";
-          elMinutes.innerText = "00"; elSeconds.innerText = "00";
-
-          // 2. เปลี่ยนข้อความวิ่งเป็น Happy New Year
-          const scrollItems = document.querySelectorAll('.scrolling-item');
-          scrollItems.forEach(item => item.innerText = "HAPPY NEW YEAR 2026 ✦ ");
-
-          // 3. เปิด Overlay พลุ
-          overlay.style.display = 'flex';
-          
-          if (!fireworksStarted) {
-            startFireworks();
-            startCelebration();
-            fireworksStarted = true;
-          }
-        }
-      }, 1000);
-
-      function startCelebration() {
-        if(audio) {
-            audio.volume = 0.5;
-            audio.play().catch(e => console.log("Autoplay blocked"));
-        }
-        rotateInterval = setInterval(() => {
-            msgIndex = (msgIndex + 1) % messages.length;
-            hnyText.style.opacity = 0; thankText.style.opacity = 0;
-            setTimeout(() => {
-                hnyText.textContent = messages[msgIndex].hny;
-                thankText.textContent = messages[msgIndex].sub;
-                hnyText.style.opacity = 1; thankText.style.opacity = 1;
-            }, 500);
-        }, 3500);
-      }
-
-      // ปุ่มปิด (ปิด Overlay แต่หน้าเว็บหลักยังอยู่พร้อมเลข 00)
-      stopBtn.addEventListener('click', () => {
-          overlay.style.display = 'none';
-          if(audio) { audio.pause(); audio.currentTime = 0; }
-          if(rotateInterval) clearInterval(rotateInterval);
-          // หยุดพลุเพื่อประหยัดเครื่อง
-          const canvas = document.getElementById('fireworks-canvas');
-          if(canvas) canvas.style.display = 'none'; 
-      });
-
-      // ควบคุมเสียง
-      musicToggle.addEventListener('click', () => {
-          if(audio.muted) { audio.muted = false; musicToggle.textContent = "🔊"; }
-          else { audio.muted = true; musicToggle.textContent = "🔇"; }
-      });
-      volumeSlider.addEventListener('input', (e) => {
-          audio.volume = e.target.value;
-      });
-
-      // Fireworks Logic
-      function startFireworks() {
-        const canvas = document.getElementById('fireworks-canvas');
-        if(!canvas) return;
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
-        const particles = [];
-        const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#00ffff', '#ff00ff', '#ffffff', '#ffa500'];
-        class Particle {
-          constructor(x, y, color, velocity) {
-            this.x = x; this.y = y; this.color = color; this.velocity = velocity;
-            this.alpha = 1; this.friction = 0.96; this.gravity = 0.04;
-          }
-          draw() {
-            ctx.globalAlpha = this.alpha; ctx.beginPath(); ctx.arc(this.x, this.y, 2, 0, Math.PI * 2, false);
-            ctx.fillStyle = this.color; ctx.fill();
-          }
-          update() {
-            this.velocity.x *= this.friction; this.velocity.y *= this.friction; this.velocity.y += this.gravity;
-            this.x += this.velocity.x; this.y += this.velocity.y; this.alpha -= 0.008;
-          }
-        }
-        function createFirework(x, y) {
-          const count = 120; const color = colors[Math.floor(Math.random() * colors.length)];
-          for (let i = 0; i < count; i++) {
-            const angle = Math.random() * Math.PI * 2; const speed = Math.random() * 5 + 2; 
-            particles.push(new Particle(x, y, color, {x: Math.cos(angle) * speed, y: Math.sin(angle) * speed}));
-          }
-        }
-        function animate() {
-          if(canvas.style.display === 'none') return; // หยุดวาดถ้าปิดไปแล้ว
-          requestAnimationFrame(animate); ctx.globalAlpha = 0.15; ctx.fillStyle = 'rgba(0, 0, 0, 0.2)'; 
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
-          particles.forEach((p, i) => { if(p.alpha > 0){ p.update(); p.draw(); } else particles.splice(i, 1); });
-        }
-        animate();
-        setInterval(() => { if(overlay.style.display !== 'none') createFirework(Math.random() * canvas.width, Math.random() * (canvas.height/2)); }, 800);
-        createFirework(canvas.width/2, canvas.height/3);
-      }
-    });
-  </script>
 </body>
 </html>
